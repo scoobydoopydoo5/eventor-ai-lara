@@ -6,6 +6,7 @@ import { ConfettiButton } from '@/components/ConfettiButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { GuestModeModal } from '@/components/GuestModeModal';
+import { WelcomeTour } from '@/components/WelcomeTour';
 import { useEvents } from '@/hooks/useEvents';
 import { useClerkAuth } from '@/contexts/ClerkAuthContext';
 import { format } from 'date-fns';
@@ -132,12 +133,13 @@ export default function Dashboard() {
     : guestEvents;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" data-tour="dashboard">
+      <WelcomeTour />
       <header className="border-b border-border bg-card sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gradient">eventor.ai</h1>
           <div className="flex items-center gap-4">
-            <Badge variant="secondary" className="gap-1">
+            <Badge variant="secondary" className="gap-1" data-tour="balloons">
               <Coins className="h-4 w-4" />
               {balloons} Balloons
             </Badge>
@@ -178,11 +180,12 @@ export default function Dashboard() {
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate('/profile')}
+                data-tour="profile"
               >
                 <FiUser className="h-5 w-5" />
               </Button>
             )}
-            <ThemeSelector />
+            <ThemeSelector data-tour="theme" />
             {isSignedIn ? (
               <UserButton afterSignOutUrl="/dashboard" />
             ) : (
@@ -213,6 +216,7 @@ export default function Dashboard() {
             onClick={() => navigate('/create')}
             className="gap-2"
             rewardType="confetti"
+            data-tour="create-event"
           >
             <FiPlus className="h-5 w-5" />
             Create Event

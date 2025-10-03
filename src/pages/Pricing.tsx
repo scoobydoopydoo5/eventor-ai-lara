@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeSelector } from '@/components/ThemeSelector';
+import { WelcomeTour } from '@/components/WelcomeTour';
 import { useClerkAuth } from '@/contexts/ClerkAuthContext';
 import { supabase } from '@/lib/supabase-typed';
 import { toast } from '@/hooks/use-toast';
@@ -12,6 +13,23 @@ import { VIPAccessModal } from '@/components/VIPAccessModal';
 import { SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 import { CreditCard, IceCream } from 'react-kawaii';
 import { useKawaiiTheme } from '@/hooks/useKawaiiTheme';
+import { Step } from 'react-joyride';
+
+const pricingSteps: Step[] = [
+  {
+    target: '[data-tour="pricing-plans"]',
+    content: 'Choose a balloon bundle that fits your needs. More balloons = more AI features!',
+    disableBeacon: true,
+  },
+  {
+    target: '[data-tour="current-balance"]',
+    content: 'Keep track of your balloon balance here.',
+  },
+  {
+    target: '[data-tour="earn-balloons"]',
+    content: 'You can also earn free balloons by completing events and tasks!',
+  },
+];
 
 export default function Pricing() {
   const navigate = useNavigate();
@@ -52,6 +70,7 @@ export default function Pricing() {
 
   return (
     <div className="min-h-screen bg-background">
+      <WelcomeTour steps={pricingSteps} />
       <header className="border-b border-border bg-card sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -75,7 +94,7 @@ export default function Pricing() {
 
       <div className="container mx-auto px-4 py-8">
         {userId && (
-          <Card className="mb-8 max-w-md mx-auto">
+          <Card className="mb-8 max-w-md mx-auto" data-tour="current-balance">
             <CardContent className="pt-6 text-center">
               <div className="flex justify-center mb-4">
                 <IceCream size={100} mood="excited" color={kawaiiColor} />
@@ -113,7 +132,7 @@ export default function Pricing() {
             ))}
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in" data-tour="pricing-plans">
             {plans?.map((plan) => (
               <Card key={plan.id} className="relative overflow-hidden hover:shadow-lg transition-shadow">
                 {plan.daily_balloons > 0 && (
@@ -162,7 +181,7 @@ export default function Pricing() {
           </div>
         )}
 
-        <Card className="mt-8 max-w-2xl mx-auto">
+        <Card className="mt-8 max-w-2xl mx-auto" data-tour="earn-balloons">
           <CardHeader>
             <CardTitle>How to earn balloons?</CardTitle>
           </CardHeader>
