@@ -4,11 +4,33 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { AuthButton } from '@/components/AuthButton';
+import { WelcomeTour } from '@/components/WelcomeTour';
 import { FiStar as Sparkles, FiCalendar as Calendar, FiUsers as Users, FiTrendingUp as TrendingUp, FiClock as Clock, FiDollarSign, FiBook, FiMenu, FiX } from 'react-icons/fi';
 import { Planet, IceCream, Cat } from 'react-kawaii';
 import { useKawaiiTheme } from '@/hooks/useKawaiiTheme';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import academyxLogo from '@/assets/academyx-logo.png';
+import { Step } from 'react-joyride';
+
+const homepageSteps: Step[] = [
+  {
+    target: '[data-tour="hero"]',
+    content: 'Welcome to eventor.ai! Your AI-powered event planning assistant.',
+    disableBeacon: true,
+  },
+  {
+    target: '[data-tour="create-event"]',
+    content: 'Click here to start planning your first event with AI assistance.',
+  },
+  {
+    target: '[data-tour="features"]',
+    content: 'Explore our powerful features including AI planning, scheduling, and budget tracking.',
+  },
+  {
+    target: '[data-tour="how-it-works"]',
+    content: 'Learn how easy it is to plan events in just three simple steps.',
+  },
+];
 
 export default function Index() {
   const navigate = useNavigate();
@@ -45,6 +67,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background">
+      <WelcomeTour steps={homepageSteps} />
       <header className="border-b border-border bg-card sticky top-0 z-50 backdrop-blur-sm bg-card/80">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gradient">eventor.ai</h1>
@@ -101,7 +124,7 @@ export default function Index() {
       <main className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto space-y-16">
           {/* Hero Section */}
-          <section className="text-center space-y-6 animate-fade-in">
+          <section className="text-center space-y-6 animate-fade-in" data-tour="hero">
             <div className="flex justify-center mb-6">
               <Planet size={120} mood="excited" color={kawaiiColor} />
             </div>
@@ -126,6 +149,7 @@ export default function Index() {
                 size="lg"
                 onClick={() => navigate('/dashboard')}
                 className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 shadow-elegant w-full sm:w-auto"
+                data-tour="create-event"
               >
                 <Sparkles className="h-5 w-5" />
                 Create Event
@@ -146,7 +170,7 @@ export default function Index() {
           </section>
 
           {/* Features Grid */}
-          <section className="grid md:grid-cols-2 gap-6 animate-slide-up">
+          <section className="grid md:grid-cols-2 gap-6 animate-slide-up" data-tour="features">
             {features.map((feature, idx) => (
               <Card key={idx} className="shadow-card hover:shadow-elegant transition-smooth">
                 <CardHeader>
@@ -159,7 +183,7 @@ export default function Index() {
           </section>
 
           {/* How It Works */}
-          <section className="space-y-8 animate-fade-in">
+          <section className="space-y-8 animate-fade-in" data-tour="how-it-works">
             <div className="text-center space-y-2">
               <div className="flex justify-center mb-4">
                 <IceCream size={100} mood="blissful" color={kawaiiColor} />

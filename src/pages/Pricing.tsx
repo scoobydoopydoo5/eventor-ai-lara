@@ -31,11 +31,19 @@ const pricingSteps: Step[] = [
   },
 ];
 
+// Map Stripe price IDs to products
+const STRIPE_PRICE_IDS: { [key: string]: string } = {
+  'Starter Bundle': 'price_1SEIEjE93RkFnvjWk8yE8PN7',
+  'Premium Bundle': 'price_1SEIFsE93RkFnvjWvWy9EWwz',
+  'Ultimate Bundle': 'price_1SEIGgE93RkFnvjW94xFcTlZ',
+};
+
 export default function Pricing() {
   const navigate = useNavigate();
   const { userId, balloons } = useClerkAuth();
   const { isSignedIn } = useUser();
   const [vipModalOpen, setVipModalOpen] = useState(false);
+  const [purchasingPlan, setPurchasingPlan] = useState<string | null>(null);
   const { kawaiiColor } = useKawaiiTheme();
 
   const { data: plans, isLoading } = useQuery({
@@ -52,7 +60,7 @@ export default function Pricing() {
     },
   });
 
-  const handlePurchase = (planName: string) => {
+  const handlePurchase = async (planName: string) => {
     if (!userId) {
       toast({
         title: "Sign in required",
@@ -62,10 +70,38 @@ export default function Pricing() {
       return;
     }
 
-    toast({
-      title: "Coming soon!",
-      description: `${planName} purchase will be available soon. Payment integration coming!`,
-    });
+    const priceId = STRIPE_PRICE_IDS[planName];
+    if (!priceId) {
+      toast({
+        title: "Error",
+        description: "Invalid plan selected",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setPurchasingPlan(planName);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: { priceId },
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to initiate payment. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setPurchasingPlan(null);
+    }
   };
 
   return (
@@ -172,8 +208,9 @@ export default function Pricing() {
                     onClick={() => handlePurchase(plan.name)}
                     className="w-full"
                     variant={plan.daily_balloons > 0 ? 'default' : 'outline'}
+                    disabled={purchasingPlan === plan.name}
                   >
-                    {plan.daily_balloons > 0 ? 'Subscribe' : 'Purchase'}
+                    {purchasingPlan === plan.name ? 'Processing...' : plan.daily_balloons > 0 ? 'Subscribe' : 'Purchase'}
                   </Button>
                 </CardContent>
               </Card>

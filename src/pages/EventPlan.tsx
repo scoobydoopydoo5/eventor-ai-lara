@@ -4,6 +4,7 @@ import { FiArrowLeft, FiUserPlus } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeSelector } from '@/components/ThemeSelector';
+import { WelcomeTour } from '@/components/WelcomeTour';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -31,6 +32,27 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStr
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
+import { Step } from 'react-joyride';
+
+const eventSteps: Step[] = [
+  {
+    target: '[data-tour="event-cards"]',
+    content: 'Welcome to your event dashboard! These cards help you manage every aspect of your event.',
+    disableBeacon: true,
+  },
+  {
+    target: '[data-tour="search"]',
+    content: 'Search for specific features using this search bar.',
+  },
+  {
+    target: '[data-tour="settings"]',
+    content: 'Customize which cards are visible and manage event settings here.',
+  },
+  {
+    target: '[data-tour="public-toggle"]',
+    content: 'Toggle whether your event is public or private.',
+  },
+];
 
 interface CardItem {
   id: string;
@@ -341,6 +363,7 @@ export default function EventPlan() {
 
   return (
     <div className="min-h-screen bg-background">
+      <WelcomeTour steps={eventSteps} />
       <header className="border-b border-border bg-card sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -391,10 +414,10 @@ export default function EventPlan() {
                   {copying ? 'Adding...' : 'Add to Your Account'}
                 </Button>
               )}
-              <Button variant="outline" size="icon" onClick={() => setSettingsOpen(true)}>
+              <Button variant="outline" size="icon" onClick={() => setSettingsOpen(true)} data-tour="settings">
                 <Settings className="h-5 w-5" />
               </Button>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2" data-tour="public-toggle">
                 <Switch
                   id="public-mode"
                   checked={isPublic}
@@ -414,6 +437,7 @@ export default function EventPlan() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="max-w-md"
+              data-tour="search"
             />
           </div>
         </div>
@@ -424,7 +448,7 @@ export default function EventPlan() {
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={filteredCards.map(c => c.id)} strategy={rectSortingStrategy}>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 animate-slide-up">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 animate-slide-up" data-tour="event-cards">
               {filteredCards.map((card) => (
                 <SortableCard key={card.id} card={card} eventId={eventId!} />
               ))}
