@@ -1,24 +1,31 @@
-import { useNavigate } from 'react-router-dom';
-import { SignInButton, UserButton, useUser } from '@clerk/clerk-react';
-import { FiPlus, FiCalendar, FiTrash2, FiUser, FiDownload, FiSettings } from 'react-icons/fi';
-import { Button } from '@/components/ui/button';
-import { ConfettiButton } from '@/components/ConfettiButton';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ThemeSelector } from '@/components/ThemeSelector';
-import { GuestModeModal } from '@/components/GuestModeModal';
-import { WelcomeTour } from '@/components/WelcomeTour';
-import { useEvents } from '@/hooks/useEvents';
-import { useClerkAuth } from '@/contexts/ClerkAuthContext';
-import { format } from 'date-fns';
-import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase-typed';
-import { useToast } from '@/hooks/use-toast';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Coins } from 'lucide-react';
-import { Backpack } from 'react-kawaii';
-import { useKawaiiTheme } from '@/hooks/useKawaiiTheme';
+import { useNavigate } from "react-router-dom";
+import { SignInButton, UserButton, useUser } from "@clerk/clerk-react";
+import {
+  FiPlus,
+  FiCalendar,
+  FiTrash2,
+  FiUser,
+  FiDownload,
+  FiSettings,
+} from "react-icons/fi";
+import { Button } from "@/components/ui/button";
+import { ConfettiButton } from "@/components/ConfettiButton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ThemeSelector } from "@/components/ThemeSelector";
+import { GuestModeModal } from "@/components/GuestModeModal";
+import { WelcomeTour } from "@/components/WelcomeTour";
+import { useEvents } from "@/hooks/useEvents";
+import { useClerkAuth } from "@/contexts/ClerkAuthContext";
+import { format } from "date-fns";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase-typed";
+import { useToast } from "@/hooks/use-toast";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Coins } from "lucide-react";
+import { Backpack } from "react-kawaii";
+import { useKawaiiTheme } from "@/hooks/useKawaiiTheme";
 import {
   Sheet,
   SheetContent,
@@ -26,7 +33,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
+} from "@/components/ui/sheet";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -37,7 +44,7 @@ export default function Dashboard() {
   const { kawaiiColor } = useKawaiiTheme();
   const [guestEvents, setGuestEvents] = useState<any[]>([]);
   const [playTicTacToeLoading, setPlayTicTacToeLoading] = useState(
-    localStorage.getItem('play_tictactoe_loading') === 'true'
+    localStorage.getItem("play_tictactoe_loading") === "true"
   );
 
   useEffect(() => {
@@ -50,18 +57,20 @@ export default function Dashboard() {
   }, [isSignedIn]);
 
   const mergeGuestEvents = async () => {
-    const guestEventIds = JSON.parse(localStorage.getItem('owned_events') || '[]');
+    const guestEventIds = JSON.parse(
+      localStorage.getItem("owned_events") || "[]"
+    );
     if (guestEventIds.length > 0 && userId) {
       // Load guest events
       const { data: guestEventsData } = await (supabase as any)
-        .from('events')
-        .select('*')
-        .in('id', guestEventIds);
-      
+        .from("events")
+        .select("*")
+        .in("id", guestEventIds);
+
       if (guestEventsData && guestEventsData.length > 0) {
         setGuestEvents(guestEventsData);
         toast({
-          title: 'Guest Events Found',
+          title: "Guest Events Found",
           description: `You have ${guestEventsData.length} events from guest mode. Add them to your account from the event page.`,
         });
       }
@@ -70,66 +79,78 @@ export default function Dashboard() {
 
   const loadGuestEvents = async () => {
     // Load from both owned_events and guestEvents for backward compatibility
-    const ownedEventIds = JSON.parse(localStorage.getItem('owned_events') || '[]');
-    const guestEventIds = JSON.parse(localStorage.getItem('guestEvents') || '[]');
+    const ownedEventIds = JSON.parse(
+      localStorage.getItem("owned_events") || "[]"
+    );
+    const guestEventIds = JSON.parse(
+      localStorage.getItem("guestEvents") || "[]"
+    );
     const allEventIds = [...new Set([...ownedEventIds, ...guestEventIds])];
-    
+
     if (allEventIds.length > 0) {
       const { data } = await (supabase as any)
-        .from('events')
-        .select('*')
-        .in('id', allEventIds)
-        .order('created_at', { ascending: false });
-      
+        .from("events")
+        .select("*")
+        .in("id", allEventIds)
+        .order("created_at", { ascending: false });
+
       setGuestEvents(data || []);
     }
   };
 
   const handleDeleteEvent = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (confirm('Are you sure you want to delete this event?')) {
+    if (confirm("Are you sure you want to delete this event?")) {
       await deleteEvent(id);
-      
+
       // Remove from guest events if not signed in
       if (!isSignedIn) {
-        const guestEventIds = JSON.parse(localStorage.getItem('guestEvents') || '[]');
-        const updated = guestEventIds.filter((eventId: string) => eventId !== id);
-        localStorage.setItem('guestEvents', JSON.stringify(updated));
+        const guestEventIds = JSON.parse(
+          localStorage.getItem("guestEvents") || "[]"
+        );
+        const updated = guestEventIds.filter(
+          (eventId: string) => eventId !== id
+        );
+        localStorage.setItem("guestEvents", JSON.stringify(updated));
         loadGuestEvents();
       }
     }
   };
 
   const downloadEventLinks = () => {
-    const eventLinks = (isSignedIn ? events : guestEvents).map(event => 
-      `${event.name} - ${window.location.origin}/event/${event.id}`
-    ).join('\n\n');
-    
-    const blob = new Blob([eventLinks], { type: 'text/plain' });
+    const eventLinks = (isSignedIn ? events : guestEvents)
+      .map(
+        (event) => `${event.name} - ${window.location.origin}/event/${event.id}`
+      )
+      .join("\n\n");
+
+    const blob = new Blob([eventLinks], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'event-links.txt';
+    a.download = "event-links.txt";
     a.click();
     URL.revokeObjectURL(url);
-    
+
     toast({
-      title: 'Success',
-      description: 'Event links downloaded successfully',
+      title: "Success",
+      description: "Event links downloaded successfully",
     });
   };
 
   const handleToggleTicTacToe = (checked: boolean) => {
     setPlayTicTacToeLoading(checked);
-    localStorage.setItem('play_tictactoe_loading', checked.toString());
+    localStorage.setItem("play_tictactoe_loading", checked.toString());
     toast({
-      title: checked ? 'Enabled' : 'Disabled',
-      description: checked ? 'Tic-tac-toe will show during loading' : 'Tic-tac-toe disabled',
+      title: checked ? "Enabled" : "Disabled",
+      description: checked
+        ? "Tic-tac-toe will show during loading"
+        : "Tic-tac-toe disabled",
     });
   };
 
-  const displayEvents = isSignedIn 
-    ? [...events.filter(e => e.clerk_user_id === userId), ...guestEvents]
+  const displayEvents = isSignedIn
+    ? [...events.filter((e) => e.clerk_user_id === userId), ...guestEvents]
     : guestEvents;
 
   return (
@@ -158,7 +179,9 @@ export default function Dashboard() {
                 </SheetHeader>
                 <div className="mt-6 space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="tictactoe">Play Tic-Tac-Toe when loading</Label>
+                    <Label htmlFor="tictactoe">
+                      Play Tic-Tac-Toe when loading
+                    </Label>
                     <Switch
                       id="tictactoe"
                       checked={playTicTacToeLoading}
@@ -171,7 +194,7 @@ export default function Dashboard() {
             <Button
               variant="ghost"
               className="gap-2"
-              onClick={() => navigate('/pricing')}
+              onClick={() => navigate("/pricing")}
             >
               <span className="font-semibold">{balloons} 🎈</span>
             </Button>
@@ -179,7 +202,7 @@ export default function Dashboard() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => navigate('/profile')}
+                onClick={() => navigate("/profile")}
                 data-tour="profile"
               >
                 <FiUser className="h-5 w-5" />
@@ -199,7 +222,7 @@ export default function Dashboard() {
 
       <div className="container mx-auto px-4 py-8">
         {!isSignedIn && (
-          <GuestModeModal 
+          <GuestModeModal
             guestEvents={guestEvents}
             onDownloadLinks={downloadEventLinks}
           />
@@ -213,7 +236,7 @@ export default function Dashboard() {
             </p>
           </div>
           <ConfettiButton
-            onClick={() => navigate('/create')}
+            onClick={() => navigate("/create")}
             className="gap-2"
             rewardType="confetti"
             data-tour="create-event"
@@ -222,7 +245,7 @@ export default function Dashboard() {
             Create Event
           </ConfettiButton>
           <ConfettiButton
-            onClick={() => navigate('/attendee-create-modes/custom')}
+            onClick={() => navigate("/attendee-create-modes/custom")}
             variant="outline"
             className="gap-2"
             rewardType="balloons"
@@ -235,7 +258,9 @@ export default function Dashboard() {
         {!isSignedIn && (
           <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg animate-fade-in">
             <p className="text-sm">
-              🎈 <strong>Guest Mode:</strong> You have {balloons} free balloons to try our AI features! Sign in to save your progress and get more balloons.
+              🎈 <strong>Guest Mode:</strong> You have {balloons} free balloons
+              to try our AI features! Sign in to save your progress and get more
+              balloons.
             </p>
           </div>
         )}
@@ -266,7 +291,10 @@ export default function Dashboard() {
               <p className="text-muted-foreground mb-6">
                 Create your first event to get started
               </p>
-              <ConfettiButton onClick={() => navigate('/create')} rewardType="balloons">
+              <ConfettiButton
+                onClick={() => navigate("/create")}
+                rewardType="balloons"
+              >
                 <FiPlus className="h-5 w-5 mr-2" />
                 Create Event
               </ConfettiButton>
@@ -282,8 +310,8 @@ export default function Dashboard() {
               >
                 {event.event_image && (
                   <div className="h-40 w-full overflow-hidden">
-                    <img 
-                      src={event.event_image} 
+                    <img
+                      src={event.event_image}
                       alt={event.name}
                       className="w-full h-full object-cover"
                     />
@@ -305,14 +333,15 @@ export default function Dashboard() {
                 <CardContent className="space-y-2">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <FiCalendar className="h-4 w-4" />
-                    {format(new Date(event.event_date), 'PPP')}
+                    {format(new Date(event.event_date), "PPP")}
                   </div>
                   <p className="text-sm text-muted-foreground capitalize">
                     {event.event_type} • {event.plan_mode}
                   </p>
                   {event.location_name && (
                     <p className="text-sm text-muted-foreground truncate">
-                      📍 {event.location_name}{event.country && `, ${event.country}`}
+                      📍 {event.location_name}
+                      {event.country && `, ${event.country}`}
                     </p>
                   )}
                 </CardContent>

@@ -40,3 +40,46 @@
 .read-the-docs {
   color: #888;
 }
+
+.cc-1j6x8,
+.cc-zl8x6,
+.cc-1j6x8,
+.cc-1j6x8 {
+  display: none !important;
+  color: white !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.cc-157aw,
+.cc-1kgzy {
+  background-color: var(--primary) !important;
+}
+::-moz-selection {
+  /* Code for Firefox */
+  color: var(--thatcolor);
+  background: var(--thatbg);
+}
+
+::selection {
+  color: var(--thatcolor);
+  background: var(--thatbg);
+}
+.cc-1j6x8,
+.cc-zl8x6,
+.cc-1j6x8,
+.cc-1j6x8,
+.cc-1si9v {
+  display: none !important;
+  color: white !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.cc-157aw,
+.cc-1kgzy {
+  background-color: hsl(var(--primary)) !important;
+}
+html body .crisp-client .cc-1brb6 .cc-1kgzy {
+  background-color: hsl(var(--primary)) !important;
+}

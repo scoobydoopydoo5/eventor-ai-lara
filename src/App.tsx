@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { ClerkAuthProvider } from "./contexts/ClerkAuthContext";
 import { ProtectedEventRoute } from "./components/ProtectedEventRoute";
 import Index from "./pages/Index";
+
 import Dashboard from "./pages/Dashboard";
 import CreateEvent from "./pages/CreateEvent";
 import EventPlan from "./pages/EventPlan";
@@ -74,73 +75,382 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+
           <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/create" element={<CreateEvent />} />
-            <Route path="/find-events" element={<FindEvents />} />
-            <Route path="/join-by-code" element={<JoinByCode />} />
-            <Route path="/event/:eventId" element={<ProtectedEventRoute><EventPlan /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/plan" element={<ProtectedEventRoute><EventPlanner /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/details" element={<ProtectedEventRoute><EventDetails /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/budget" element={<ProtectedEventRoute><EventBudget /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/invites" element={<ProtectedEventRoute><EventInvites /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/timeline" element={<ProtectedEventRoute><EventTimeline /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/full-plan" element={<ProtectedEventRoute><EventFullPlan /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/vendors" element={<ProtectedEventRoute><EventVendors /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/guests" element={<ProtectedEventRoute allowPublic><EventGuests /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/manage-tickets" element={<ProtectedEventRoute><ManageTickets /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/purchase-ticket" element={<ProtectedEventRoute allowPublic><PurchaseTicket /></ProtectedEventRoute>} />
-            <Route path="/invite/:eventId" element={<ProtectedEventRoute allowPublic><EventInvite /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/games/trivia/:roomCode" element={<ProtectedEventRoute allowPublic><AITrivia /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/games/jeopardy/:roomCode" element={<ProtectedEventRoute allowPublic><Jeopardy /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/games/quizizz/:roomCode" element={<ProtectedEventRoute allowPublic><Quizizz /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/games/icebreakers/:roomCode" element={<ProtectedEventRoute allowPublic><IceBreakers /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/games/jokes/:roomCode" element={<ProtectedEventRoute allowPublic><Jokes /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/games/emoji/:roomCode" element={<ProtectedEventRoute allowPublic><EmojiGuess /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/games/task/:roomCode" element={<ProtectedEventRoute allowPublic><RandomTask /></ProtectedEventRoute>} />
-            <Route path="/attendee-create/:eventId" element={<ProtectedEventRoute allowPublic><AttendeeCreate /></ProtectedEventRoute>} />
-            <Route path="/attendee-create-modes/:eventId" element={<ProtectedEventRoute allowPublic><AttendeeCreateModes /></ProtectedEventRoute>} />
-            <Route path="/attendee/:eventId" element={<ProtectedEventRoute allowPublic><AttendeePlan /></ProtectedEventRoute>} />
-            <Route path="/attendee/:eventId/gifts" element={<ProtectedEventRoute allowPublic><AttendeeGifts /></ProtectedEventRoute>} />
-            <Route path="/attendee/:eventId/outfits" element={<ProtectedEventRoute allowPublic><AttendeeOutfits /></ProtectedEventRoute>} />
-            <Route path="/attendee/:eventId/guide" element={<ProtectedEventRoute allowPublic><AttendeeGuide /></ProtectedEventRoute>} />
-            <Route path="/attendee/:eventId/etiquette" element={<ProtectedEventRoute allowPublic><AttendeeEtiquette /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/speeches" element={<ProtectedEventRoute><EventSpeeches /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/faqs" element={<ProtectedEventRoute allowPublic><EventFAQs /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/chat" element={<ProtectedEventRoute><EventChat /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/call" element={<ProtectedEventRoute><EventCall /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/blogs" element={<ProtectedEventRoute allowPublic><EventBlogs /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/blogs/:blogNumber" element={<ProtectedEventRoute allowPublic><EventBlogPost /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/manage-blogs" element={<ProtectedEventRoute><ManageBlogs /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/event-winner" element={<ProtectedEventRoute allowPublic><EventWinner /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/food" element={<ProtectedEventRoute><EventFood /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/souvenirs" element={<ProtectedEventRoute><EventSouvenirs /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/weather" element={<ProtectedEventRoute allowPublic><EventWeather /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/sponsors" element={<ProtectedEventRoute><EventSponsors /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/theme" element={<ProtectedEventRoute><EventTheme /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/flights" element={<ProtectedEventRoute><EventFlights /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/decor" element={<ProtectedEventRoute><EventDecor /></ProtectedEventRoute>} />
-            <Route path="/event/:eventId/location" element={<ProtectedEventRoute allowPublic><EventLocation /></ProtectedEventRoute>} />
-            <Route path="/check-in/:eventId/:attendeeName" element={<ProtectedEventRoute allowPublic><CheckIn /></ProtectedEventRoute>} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/p/:username" element={<PublicProfile />} />
-            <Route path="/p/user/:userId" element={<PublicProfile />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/surveys" element={<Surveys />} />
-            <Route path="/create-survey" element={<CreateSurvey />} />
-            <Route path="/survey/:surveyId" element={<FillSurvey />} />
-            <Route path="/event/:eventId/memories" element={<ProtectedEventRoute><EventMemories /></ProtectedEventRoute>} />
-            <Route path="/docs" element={<Docs />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ClerkAuthProvider>
-  </ThemeProvider>
-</QueryClientProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/create" element={<CreateEvent />} />
+              <Route path="/find-events" element={<FindEvents />} />
+              <Route path="/join-by-code" element={<JoinByCode />} />
+              <Route
+                path="/event/:eventId"
+                element={
+                  <ProtectedEventRoute>
+                    <EventPlan />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/plan"
+                element={
+                  <ProtectedEventRoute>
+                    <EventPlanner />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/details"
+                element={
+                  <ProtectedEventRoute>
+                    <EventDetails />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/budget"
+                element={
+                  <ProtectedEventRoute>
+                    <EventBudget />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/invites"
+                element={
+                  <ProtectedEventRoute>
+                    <EventInvites />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/timeline"
+                element={
+                  <ProtectedEventRoute>
+                    <EventTimeline />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/full-plan"
+                element={
+                  <ProtectedEventRoute>
+                    <EventFullPlan />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/vendors"
+                element={
+                  <ProtectedEventRoute>
+                    <EventVendors />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/guests"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventGuests />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/manage-tickets"
+                element={
+                  <ProtectedEventRoute>
+                    <ManageTickets />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/purchase-ticket"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <PurchaseTicket />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/invite/:eventId"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventInvite />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/games/trivia/:roomCode"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AITrivia />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/games/jeopardy/:roomCode"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <Jeopardy />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/games/quizizz/:roomCode"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <Quizizz />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/games/icebreakers/:roomCode"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <IceBreakers />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/games/jokes/:roomCode"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <Jokes />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/games/emoji/:roomCode"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EmojiGuess />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/games/task/:roomCode"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <RandomTask />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/attendee-create/:eventId"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AttendeeCreate />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/attendee-create-modes/:eventId"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AttendeeCreateModes />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/attendee/:eventId"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AttendeePlan />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/attendee/:eventId/gifts"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AttendeeGifts />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/attendee/:eventId/outfits"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AttendeeOutfits />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/attendee/:eventId/guide"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AttendeeGuide />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/attendee/:eventId/etiquette"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <AttendeeEtiquette />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/speeches"
+                element={
+                  <ProtectedEventRoute>
+                    <EventSpeeches />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/faqs"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventFAQs />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/chat"
+                element={
+                  <ProtectedEventRoute>
+                    <EventChat />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/call"
+                element={
+                  <ProtectedEventRoute>
+                    <EventCall />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/blogs"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventBlogs />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/blogs/:blogNumber"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventBlogPost />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/manage-blogs"
+                element={
+                  <ProtectedEventRoute>
+                    <ManageBlogs />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/event-winner"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventWinner />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/food"
+                element={
+                  <ProtectedEventRoute>
+                    <EventFood />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/souvenirs"
+                element={
+                  <ProtectedEventRoute>
+                    <EventSouvenirs />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/weather"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventWeather />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/sponsors"
+                element={
+                  <ProtectedEventRoute>
+                    <EventSponsors />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/theme"
+                element={
+                  <ProtectedEventRoute>
+                    <EventTheme />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/flights"
+                element={
+                  <ProtectedEventRoute>
+                    <EventFlights />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/decor"
+                element={
+                  <ProtectedEventRoute>
+                    <EventDecor />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/event/:eventId/location"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <EventLocation />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route
+                path="/check-in/:eventId/:attendeeName"
+                element={
+                  <ProtectedEventRoute allowPublic>
+                    <CheckIn />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/p/:username" element={<PublicProfile />} />
+              <Route path="/p/user/:userId" element={<PublicProfile />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/surveys" element={<Surveys />} />
+              <Route path="/create-survey" element={<CreateSurvey />} />
+              <Route path="/survey/:surveyId" element={<FillSurvey />} />
+              <Route
+                path="/event/:eventId/memories"
+                element={
+                  <ProtectedEventRoute>
+                    <EventMemories />
+                  </ProtectedEventRoute>
+                }
+              />
+              <Route path="/docs" element={<Docs />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ClerkAuthProvider>
+    </ThemeProvider>
+  </QueryClientProvider>
 );
 
 export default App;

@@ -1,14 +1,36 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase-typed";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Search, Heart, Eye, MapPin, Calendar, Users } from "lucide-react";
+import {
+  Search,
+  Heart,
+  Eye,
+  MapPin,
+  Calendar,
+  Users,
+  ArrowLeft,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { Backpack } from "react-kawaii";
+import { useKawaiiTheme } from "@/hooks/useKawaiiTheme";
 
 interface PublicEvent {
   id: string;
@@ -37,6 +59,7 @@ export default function FindEvents() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { kawaiiColor } = useKawaiiTheme();
 
   useEffect(() => {
     fetchPublicEvents();
@@ -56,42 +79,45 @@ export default function FindEvents() {
         .order("event_date", { ascending: true });
 
       if (error) throw error;
-      
+
       // Fetch actual attendee counts and creator info
-      const eventsWithCounts = await Promise.all((data || []).map(async (event) => {
-        const { data: attendees } = await supabase
-          .from("attendee_groups")
-          .select("id")
-          .eq("event_id", event.id)
-          .eq("is_banned", false);
-        
-        // Fetch creator info if event has clerk_user_id
-        let creator_name = 'Anonymous';
-        let creator_username = null;
-        
-        if (event.clerk_user_id) {
-          const { data: profile } = await supabase
-            .from("user_profiles")
-            .select("email, username, show_name")
-            .eq("clerk_user_id", event.clerk_user_id)
-            .single();
-          
-          if (profile) {
-            creator_name = profile.show_name && profile.email 
-              ? profile.email.split('@')[0] 
-              : 'Anonymous';
-            creator_username = profile.username;
+      const eventsWithCounts = await Promise.all(
+        (data || []).map(async (event) => {
+          const { data: attendees } = await supabase
+            .from("attendee_groups")
+            .select("id")
+            .eq("event_id", event.id)
+            .eq("is_banned", false);
+
+          // Fetch creator info if event has clerk_user_id
+          let creator_name = "Anonymous";
+          let creator_username = null;
+
+          if (event.clerk_user_id) {
+            const { data: profile } = await supabase
+              .from("user_profiles")
+              .select("email, username, show_name")
+              .eq("clerk_user_id", event.clerk_user_id)
+              .single();
+
+            if (profile) {
+              creator_name =
+                profile.show_name && profile.email
+                  ? profile.email.split("@")[0]
+                  : "Anonymous";
+              creator_username = profile.username;
+            }
           }
-        }
-        
-        return {
-          ...event,
-          actual_attendees: attendees?.length || 0,
-          creator_name,
-          creator_username
-        };
-      }));
-      
+
+          return {
+            ...event,
+            actual_attendees: attendees?.length || 0,
+            creator_name,
+            creator_username,
+          };
+        })
+      );
+
       setEvents(eventsWithCounts);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -124,7 +150,9 @@ export default function FindEvents() {
         (event) =>
           event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           event.event_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.short_description?.toLowerCase().includes(searchQuery.toLowerCase())
+          event.short_description
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase())
       );
     }
 
@@ -136,7 +164,8 @@ export default function FindEvents() {
   };
 
   const toggleFavorite = async (eventId: string) => {
-    const userIdentifier = localStorage.getItem("user_identifier") || `guest_${Date.now()}`;
+    const userIdentifier =
+      localStorage.getItem("user_identifier") || `guest_${Date.now()}`;
     localStorage.setItem("user_identifier", userIdentifier);
 
     try {
@@ -150,7 +179,10 @@ export default function FindEvents() {
         const newFavorites = new Set(favorites);
         newFavorites.delete(eventId);
         setFavorites(newFavorites);
-        localStorage.setItem("event_favorites", JSON.stringify([...newFavorites]));
+        localStorage.setItem(
+          "event_favorites",
+          JSON.stringify([...newFavorites])
+        );
       } else {
         await supabase.from("event_favorites").insert({
           event_id: eventId,
@@ -160,7 +192,10 @@ export default function FindEvents() {
         const newFavorites = new Set(favorites);
         newFavorites.add(eventId);
         setFavorites(newFavorites);
-        localStorage.setItem("event_favorites", JSON.stringify([...newFavorites]));
+        localStorage.setItem(
+          "event_favorites",
+          JSON.stringify([...newFavorites])
+        );
       }
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -180,10 +215,15 @@ export default function FindEvents() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Find Events</h1>
-          <p className="text-muted-foreground">Discover and join exciting events</p>
+        <div className="flex items-center space-x-4">
+          <Link to="/" className="p-2 rounded hover:bg-accent">
+            <ArrowLeft size={24} />
+          </Link>
+          <h1 className="text-4xl font-bold">Find Events</h1>
         </div>
+        <p className="text-muted-foreground mt-2">
+          Discover and join exciting events
+        </p>
 
         <div className="mb-6 space-y-4">
           <div className="relative">
@@ -213,7 +253,11 @@ export default function FindEvents() {
             {eventTypes.map((type) => (
               <Button
                 key={type}
-                variant={selectedType === type && !showFavorites ? "default" : "outline"}
+                variant={
+                  selectedType === type && !showFavorites
+                    ? "default"
+                    : "outline"
+                }
                 onClick={() => {
                   setSelectedType(type);
                   setShowFavorites(false);
@@ -225,19 +269,24 @@ export default function FindEvents() {
             ))}
           </div>
         </div>
-
         {filteredEvents.length === 0 ? (
           <div className="text-center py-12">
+            <div className="flex justify-center mb-6">
+              <Backpack size={120} mood="sad" color={kawaiiColor} />
+            </div>
             <p className="text-muted-foreground">No events found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEvents.map((event) => (
-              <Card key={event.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+              <Card
+                key={event.id}
+                className="hover:shadow-lg transition-shadow overflow-hidden"
+              >
                 {(event as any).event_image && (
                   <div className="h-40 w-full overflow-hidden">
-                    <img 
-                      src={(event as any).event_image} 
+                    <img
+                      src={(event as any).event_image}
                       alt={event.name}
                       className="w-full h-full object-cover"
                     />
@@ -277,17 +326,22 @@ export default function FindEvents() {
                   {event.location_name && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <MapPin className="h-4 w-4" />
-                      {event.location_name}{event.country && `, ${event.country}`}
+                      {event.location_name}
+                      {event.country && `, ${event.country}`}
                     </div>
                   )}
                   {event.estimated_guests && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Users className="h-4 w-4" />
-                      {event.actual_attendees}/{event.estimated_guests ? `~${event.estimated_guests}` : '?'} guests
+                      {event.actual_attendees}/
+                      {event.estimated_guests
+                        ? `~${event.estimated_guests}`
+                        : "?"}{" "}
+                      guests
                     </div>
                   )}
                   <div className="text-sm text-muted-foreground pt-2 border-t border-border">
-                    Event by:{' '}
+                    Event by:{" "}
                     {event.creator_username ? (
                       <button
                         onClick={(e) => {
@@ -336,7 +390,9 @@ export default function FindEvents() {
                 <Badge variant="secondary">{previewEvent.event_type}</Badge>
               </div>
               {previewEvent.short_description && (
-                <p className="text-muted-foreground">{previewEvent.short_description}</p>
+                <p className="text-muted-foreground">
+                  {previewEvent.short_description}
+                </p>
               )}
               <div className="grid grid-cols-2 gap-4">
                 <div>

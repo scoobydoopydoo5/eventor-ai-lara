@@ -1,9 +1,15 @@
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { toast } from '@/hooks/use-toast';
-import { useBalloons } from '@/hooks/useBalloons';
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
+import { useBalloons } from "@/hooks/useBalloons";
 
 interface VIPAccessModalProps {
   open: boolean;
@@ -11,19 +17,19 @@ interface VIPAccessModalProps {
 }
 
 export function VIPAccessModal({ open, onOpenChange }: VIPAccessModalProps) {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { earnBalloons } = useBalloons();
 
   const handleSubmit = async () => {
-    if (password.trim().toLowerCase() === 'iamagility') {
+    if (password.trim().toLowerCase() === "iamagility") {
       setLoading(true);
-      await earnBalloons(10000, 'VIP Testing Access');
+      await earnBalloons(10000, "VIP Testing Access");
       toast({
         title: "VIP Access Granted! 🎈",
         description: "You've received 10,000 balloons for testing!",
       });
-      setPassword('');
+      setPassword("");
       onOpenChange(false);
       setLoading(false);
     } else {
@@ -41,7 +47,8 @@ export function VIPAccessModal({ open, onOpenChange }: VIPAccessModalProps) {
         <DialogHeader>
           <DialogTitle>VIP Testing Access</DialogTitle>
           <DialogDescription>
-            Enter the VIP password to receive 10,000 balloons for testing
+            Enter the VIP password: "IAMAGILITY", to receive 10,000 balloons for
+            testing
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
@@ -50,14 +57,14 @@ export function VIPAccessModal({ open, onOpenChange }: VIPAccessModalProps) {
             placeholder="Enter VIP password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           />
-          <Button 
-            onClick={handleSubmit} 
+          <Button
+            onClick={handleSubmit}
             disabled={loading || !password.trim()}
             className="w-full"
           >
-            {loading ? 'Verifying...' : 'Submit'}
+            {loading ? "Verifying..." : "Submit"}
           </Button>
         </div>
       </DialogContent>

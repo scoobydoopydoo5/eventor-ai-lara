@@ -31,9 +31,11 @@ import { Step } from "react-joyride";
 const homepageSteps: Step[] = [
   {
     target: '[data-tour="hero"]',
-    content: "Welcome to eventor.ai! Your AI-powered event planning assistant.",
+    content:
+      "Welcome to eventor.ai! Please go to /pricing from navbar then get VIP Access to get unlimited balloons for testing!.",
     disableBeacon: true,
   },
+
   {
     target: '[data-tour="create-event"]',
     content:
@@ -179,6 +181,14 @@ export default function Index() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Button
                 size="lg"
+                variant="outline"
+                onClick={() => navigate("/surveys")}
+                className="hidden sm:flex"
+              >
+                Earn Balloons
+              </Button>{" "}
+              <Button
+                size="lg"
                 onClick={() => navigate("/dashboard")}
                 className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 shadow-elegant w-full sm:w-auto"
                 data-tour="create-event"
@@ -189,24 +199,10 @@ export default function Index() {
               <Button
                 size="lg"
                 variant="outline"
-                onClick={() => navigate("/attendee-create-modes/custom")}
+                onClick={() => navigate("/find-events")}
                 className="w-full sm:w-auto"
               >
-                Plan Attendance
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => navigate("/surveys")}
-                className="hidden sm:flex"
-              >
-                Earn Balloons
-              </Button>
-            </div>
-
-            <div className="pt-2">
-              <Button variant="ghost" onClick={() => navigate("/join-by-code")}>
-                Join by Code
+                Find Events
               </Button>
             </div>
           </section>
@@ -319,9 +315,13 @@ export default function Index() {
                 className="h-8 object-contain"
               />
               <span className="text-xs text-muted-foreground">x</span>
-              <div className="text-sm font-bold" style={{ color: "#E31E24" }}>
-                Agility
-              </div>
+              <img
+                src={
+                  "https://www.supplychain247.com/images/logos/agility_logo_600.png"
+                }
+                alt="AcademyX"
+                className="h-12 object-contain"
+              />
             </div>
           </div>
         </div>
