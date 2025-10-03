@@ -32,7 +32,7 @@ const homepageSteps: Step[] = [
   {
     target: '[data-tour="hero"]',
     content:
-      "Welcome to eventor.ai! Please go to /pricing from navbar then get VIP Access to get unlimited balloons for testing!.",
+      "Welcome to eventor.ai! Please use on laptop for better experience! Also Please go to /pricing from navbar then get VIP Access to get unlimited balloons for testing!.",
     disableBeacon: true,
   },
 
