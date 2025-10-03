@@ -1,10 +1,15 @@
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { FiExternalLink, FiLoader } from 'react-icons/fi';
-import { BudgetItem } from '@/hooks/useBudget';
-import { supabase } from '@/lib/supabase-typed';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { FiExternalLink, FiLoader } from "react-icons/fi";
+import { BudgetItem } from "@/hooks/useBudget";
+import { supabase } from "@/lib/supabase-typed";
+import { useToast } from "@/hooks/use-toast";
 
 interface BudgetExplainModalProps {
   open: boolean;
@@ -21,7 +26,13 @@ interface ExplanationData {
   sources: { title: string; url: string }[];
 }
 
-export function BudgetExplainModal({ open, onOpenChange, item, eventData, currency = 'USD' }: BudgetExplainModalProps) {
+export function BudgetExplainModal({
+  open,
+  onOpenChange,
+  item,
+  eventData,
+  currency = "KWD",
+}: BudgetExplainModalProps) {
   const [loading, setLoading] = useState(false);
   const [explanation, setExplanation] = useState<ExplanationData | null>(null);
   const { toast } = useToast();
@@ -29,9 +40,12 @@ export function BudgetExplainModal({ open, onOpenChange, item, eventData, curren
   const fetchExplanation = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('explain-budget-item', {
-        body: { item, eventData }
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "explain-budget-item",
+        {
+          body: { item, eventData },
+        }
+      );
 
       if (error) throw error;
 
@@ -46,7 +60,7 @@ export function BudgetExplainModal({ open, onOpenChange, item, eventData, curren
 
       setExplanation(data);
     } catch (error) {
-      console.error('Error fetching explanation:', error);
+      console.error("Error fetching explanation:", error);
       toast({
         title: "Error",
         description: "Failed to generate explanation. Please try again.",
@@ -71,7 +85,8 @@ export function BudgetExplainModal({ open, onOpenChange, item, eventData, curren
           <DialogTitle className="text-xl">
             {item.item_name}
             <span className="ml-3 text-base font-normal text-muted-foreground">
-              {currency} {(item.estimated_cost * item.quantity).toLocaleString()}
+              {currency}{" "}
+              {(item.estimated_cost * item.quantity).toLocaleString()}
             </span>
           </DialogTitle>
         </DialogHeader>
@@ -84,7 +99,9 @@ export function BudgetExplainModal({ open, onOpenChange, item, eventData, curren
           <div className="space-y-6">
             <div>
               <h3 className="font-semibold mb-2">Explanation</h3>
-              <p className="text-muted-foreground whitespace-pre-line">{explanation.explanation}</p>
+              <p className="text-muted-foreground whitespace-pre-line">
+                {explanation.explanation}
+              </p>
             </div>
 
             {explanation.breakdown && explanation.breakdown.length > 0 && (
@@ -92,7 +109,10 @@ export function BudgetExplainModal({ open, onOpenChange, item, eventData, curren
                 <h3 className="font-semibold mb-2">Cost Breakdown</h3>
                 <ul className="space-y-1">
                   {explanation.breakdown.map((item, index) => (
-                    <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
+                    <li
+                      key={index}
+                      className="text-sm text-muted-foreground flex items-center gap-2"
+                    >
                       <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                       {item}
                     </li>
@@ -106,7 +126,10 @@ export function BudgetExplainModal({ open, onOpenChange, item, eventData, curren
                 <h3 className="font-semibold mb-2">Money-Saving Tips</h3>
                 <ul className="space-y-2">
                   {explanation.tips.map((tip, index) => (
-                    <li key={index} className="text-sm text-muted-foreground bg-accent/50 p-3 rounded-lg">
+                    <li
+                      key={index}
+                      className="text-sm text-muted-foreground bg-accent/50 p-3 rounded-lg"
+                    >
                       💡 {tip}
                     </li>
                   ))}

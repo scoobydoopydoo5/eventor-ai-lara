@@ -1,20 +1,32 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-typed';
-import { LocationMap } from '@/components/map/LocationMap';
-import { FiMapPin, FiSave } from 'react-icons/fi';
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase-typed";
+import { LocationMap } from "@/components/map/LocationMap";
+import { FiMapPin, FiSave } from "react-icons/fi";
 
 interface LocationCoordinatesCardProps {
   eventId: string;
 }
 
-export function LocationCoordinatesCard({ eventId }: LocationCoordinatesCardProps) {
+export function LocationCoordinatesCard({
+  eventId,
+}: LocationCoordinatesCardProps) {
   const { toast } = useToast();
   const [event, setEvent] = useState<any>(null);
-  const [mapCenter, setMapCenter] = useState<[number, number]>([40.7128, -74.0060]);
-  const [markerPosition, setMarkerPosition] = useState<[number, number]>([40.7128, -74.0060]);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([
+    40.7128, -74.006,
+  ]);
+  const [markerPosition, setMarkerPosition] = useState<[number, number]>([
+    40.7128, -74.006,
+  ]);
   const [saving, setSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -23,11 +35,18 @@ export function LocationCoordinatesCard({ eventId }: LocationCoordinatesCardProp
   }, [eventId]);
 
   const fetchEvent = async () => {
-    const { data } = await supabase.from('events' as any).select('*').eq('id', eventId).single();
+    const { data } = await supabase
+      .from("events" as any)
+      .select("*")
+      .eq("id", eventId)
+      .single();
     if (data) {
       setEvent(data);
       if (data.location_lat && data.location_lng) {
-        const coords: [number, number] = [parseFloat(data.location_lat), parseFloat(data.location_lng)];
+        const coords: [number, number] = [
+          parseFloat(data.location_lat),
+          parseFloat(data.location_lng),
+        ];
         setMapCenter(coords);
         setMarkerPosition(coords);
       }
@@ -43,27 +62,27 @@ export function LocationCoordinatesCard({ eventId }: LocationCoordinatesCardProp
     setSaving(true);
     try {
       const { error } = await supabase
-        .from('events' as any)
+        .from("events" as any)
         .update({
           location_lat: markerPosition[0],
           location_lng: markerPosition[1],
         })
-        .eq('id', eventId);
+        .eq("id", eventId);
 
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: 'Location coordinates saved successfully',
+        title: "Success",
+        description: "Location coordinates saved successfully",
       });
       setHasChanges(false);
       await fetchEvent();
     } catch (error) {
-      console.error('Error saving coordinates:', error);
+      console.error("Error saving coordinates:", error);
       toast({
-        title: 'Error',
-        description: 'Failed to save coordinates',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to save coordinates",
+        variant: "destructive",
       });
     } finally {
       setSaving(false);
@@ -82,7 +101,7 @@ export function LocationCoordinatesCard({ eventId }: LocationCoordinatesCardProp
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="rounded-lg overflow-hidden border border-border h-[400px]">
+        <div className=" z-[-99] rounded-lg overflow-hidden border border-border h-[400px]">
           <LocationMap
             center={mapCenter}
             markerPosition={markerPosition}
@@ -92,20 +111,20 @@ export function LocationCoordinatesCard({ eventId }: LocationCoordinatesCardProp
             }}
           />
         </div>
-        
+
         <div className="text-sm text-muted-foreground space-y-1">
           <p>Latitude: {markerPosition[0].toFixed(6)}</p>
           <p>Longitude: {markerPosition[1].toFixed(6)}</p>
         </div>
 
         {hasChanges && (
-          <Button 
-            onClick={handleSaveCoordinates} 
-            disabled={saving} 
+          <Button
+            onClick={handleSaveCoordinates}
+            disabled={saving}
             className="w-full"
           >
             <FiSave className="mr-2 h-4 w-4" />
-            {saving ? 'Saving...' : 'Save Coordinates'}
+            {saving ? "Saving..." : "Save Coordinates"}
           </Button>
         )}
       </CardContent>

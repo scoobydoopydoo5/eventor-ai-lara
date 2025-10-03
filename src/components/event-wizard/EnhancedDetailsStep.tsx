@@ -1,31 +1,63 @@
-import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { FiCalendar, FiLoader, FiZap } from 'react-icons/fi';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
-import { supabase } from '@/lib/supabase-typed';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { FiCalendar, FiLoader, FiZap } from "react-icons/fi";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { supabase } from "@/lib/supabase-typed";
+import { useToast } from "@/hooks/use-toast";
 
 interface EnhancedDetailsStepProps {
   data: any;
   onChange: (data: any) => void;
 }
 
-const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY'];
-const genderOptions = ['All', 'Male', 'Female', 'Non-binary', 'Other'];
-const ageRanges = ['All Ages', '0-12', '13-17', '18-25', '26-35', '36-50', '50+'];
+const currencies = [
+  "KWD",
+  "Riyal",
+  "USD",
+  "EUR",
+  "GBP",
+  "JPY",
+  "CAD",
+  "AUD",
+  "CHF",
+  "CNY",
+];
+const genderOptions = ["All", "Male", "Female", "Non-binary", "Other"];
+const ageRanges = [
+  "All Ages",
+  "0-12",
+  "13-17",
+  "18-25",
+  "26-35",
+  "36-50",
+  "50+",
+];
 
-export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps) {
+export function EnhancedDetailsStep({
+  data,
+  onChange,
+}: EnhancedDetailsStepProps) {
   const [enableTime, setEnableTime] = useState(!!data.event_time);
   const [filling, setFilling] = useState(false);
   const { toast } = useToast();
-  
+
   // Set default random date 2-9 days from today if no date is set
   const getDefaultDate = () => {
     if (data.event_date) {
@@ -35,30 +67,30 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
     const randomDays = Math.floor(Math.random() * 8) + 2; // 2-9 days
     const defaultDate = new Date(today);
     defaultDate.setDate(today.getDate() + randomDays);
-    
+
     // Set the default date in the data
-    onChange({ ...data, event_date: format(defaultDate, 'yyyy-MM-dd') });
+    onChange({ ...data, event_date: format(defaultDate, "yyyy-MM-dd") });
     return defaultDate;
   };
-  
+
   const [date, setDate] = useState<Date | undefined>(getDefaultDate());
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
     if (selectedDate) {
-      onChange({ ...data, event_date: format(selectedDate, 'yyyy-MM-dd') });
+      onChange({ ...data, event_date: format(selectedDate, "yyyy-MM-dd") });
     }
   };
 
   const handleFillWithAI = async () => {
     setFilling(true);
     try {
-      const { data: result } = await supabase.functions.invoke('ai-enhance', {
+      const { data: result } = await supabase.functions.invoke("ai-enhance", {
         body: {
           text: `Event: ${data.name}, Type: ${data.event_type}`,
           context: `Generate realistic values for budget, guests, and duration`,
-          type: 'event_details'
-        }
+          type: "event_details",
+        },
       });
 
       if (result?.estimated_budget) {
@@ -74,7 +106,7 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
         });
       }
     } catch (error) {
-      console.error('Error filling details:', error);
+      console.error("Error filling details:", error);
       toast({
         title: "Error",
         description: "Failed to fill details",
@@ -95,7 +127,11 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
           disabled={filling || !data.name || !data.event_type}
           className="gap-2"
         >
-          {filling ? <FiLoader className="h-4 w-4 animate-spin" /> : <FiZap className="h-4 w-4" />}
+          {filling ? (
+            <FiLoader className="h-4 w-4 animate-spin" />
+          ) : (
+            <FiZap className="h-4 w-4" />
+          )}
           Fill with AI
         </Button>
       </div>
@@ -143,7 +179,7 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
         {enableTime && (
           <Input
             type="time"
-            value={data.event_time || ''}
+            value={data.event_time || ""}
             onChange={(e) => onChange({ ...data, event_time: e.target.value })}
           />
         )}
@@ -156,8 +192,13 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
           type="number"
           min="1"
           placeholder="Duration in hours"
-          value={data.event_duration || ''}
-          onChange={(e) => onChange({ ...data, event_duration: parseInt(e.target.value) || null })}
+          value={data.event_duration || ""}
+          onChange={(e) =>
+            onChange({
+              ...data,
+              event_duration: parseInt(e.target.value) || null,
+            })
+          }
         />
       </div>
 
@@ -168,15 +209,20 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
           type="number"
           min="0"
           placeholder="Enter budget amount"
-          value={data.estimated_budget || ''}
-          onChange={(e) => onChange({ ...data, estimated_budget: parseFloat(e.target.value) || null })}
+          value={data.estimated_budget || ""}
+          onChange={(e) =>
+            onChange({
+              ...data,
+              estimated_budget: parseFloat(e.target.value) || null,
+            })
+          }
         />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="currency">Currency</Label>
         <Select
-          value={data.currency || 'USD'}
+          value={data.currency || "USD"}
           onValueChange={(value) => onChange({ ...data, currency: value })}
         >
           <SelectTrigger>
@@ -199,15 +245,20 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
           type="number"
           min="1"
           placeholder="Number of guests"
-          value={data.estimated_guests || ''}
-          onChange={(e) => onChange({ ...data, estimated_guests: parseInt(e.target.value) || null })}
+          value={data.estimated_guests || ""}
+          onChange={(e) =>
+            onChange({
+              ...data,
+              estimated_guests: parseInt(e.target.value) || null,
+            })
+          }
         />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="gender">Guest Gender</Label>
         <Select
-          value={data.guest_gender || 'all'}
+          value={data.guest_gender || "all"}
           onValueChange={(value) => onChange({ ...data, guest_gender: value })}
         >
           <SelectTrigger>
@@ -226,8 +277,10 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
       <div className="space-y-2">
         <Label htmlFor="age">Guest Age Range</Label>
         <Select
-          value={data.guest_age_range || 'all ages'}
-          onValueChange={(value) => onChange({ ...data, guest_age_range: value })}
+          value={data.guest_age_range || "all ages"}
+          onValueChange={(value) =>
+            onChange({ ...data, guest_age_range: value })
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder="Select age range" />
@@ -247,7 +300,7 @@ export function EnhancedDetailsStep({ data, onChange }: EnhancedDetailsStepProps
         <Input
           id="color"
           type="color"
-          value={data.color_theme || '#6366f1'}
+          value={data.color_theme || "#6366f1"}
           onChange={(e) => onChange({ ...data, color_theme: e.target.value })}
           className="h-12 w-full"
         />
