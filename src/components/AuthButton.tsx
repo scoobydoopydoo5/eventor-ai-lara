@@ -1,5 +1,5 @@
-import { SignInButton, UserButton, useUser } from '@clerk/clerk-react';
-import { Button } from '@/components/ui/button';
+import { SignInButton, UserButton, useUser } from "@clerk/clerk-react";
+import { Button } from "@/components/ui/button";
 
 export function AuthButton() {
   const { isSignedIn } = useUser();

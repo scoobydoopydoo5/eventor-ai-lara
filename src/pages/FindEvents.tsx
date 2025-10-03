@@ -235,7 +235,11 @@ export default function FindEvents() {
               className="pl-10"
             />
           </div>
-
+          <Link to="/join-by-code" className=" rounded ">
+            <Button variant="outline" className="mt-2">
+              Join by Code
+            </Button>
+          </Link>
           <div className="flex gap-2 flex-wrap">
             {favorites.size > 0 && (
               <Button

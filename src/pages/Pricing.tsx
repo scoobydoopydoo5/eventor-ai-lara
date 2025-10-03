@@ -1,41 +1,48 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ThemeSelector } from '@/components/ThemeSelector';
-import { WelcomeTour } from '@/components/WelcomeTour';
-import { useClerkAuth } from '@/contexts/ClerkAuthContext';
-import { supabase } from '@/lib/supabase-typed';
-import { toast } from '@/hooks/use-toast';
-import { FiArrowLeft, FiCheck } from 'react-icons/fi';
-import { VIPAccessModal } from '@/components/VIPAccessModal';
-import { SignInButton, UserButton, useUser } from '@clerk/clerk-react';
-import { CreditCard, IceCream } from 'react-kawaii';
-import { useKawaiiTheme } from '@/hooks/useKawaiiTheme';
-import { Step } from 'react-joyride';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ThemeSelector } from "@/components/ThemeSelector";
+import { WelcomeTour } from "@/components/WelcomeTour";
+import { useClerkAuth } from "@/contexts/ClerkAuthContext";
+import { supabase } from "@/lib/supabase-typed";
+import { toast } from "@/hooks/use-toast";
+import { FiArrowLeft, FiCheck, FiUser } from "react-icons/fi";
+import { VIPAccessModal } from "@/components/VIPAccessModal";
+import { SignInButton, UserButton, useUser } from "@clerk/clerk-react";
+import { CreditCard, IceCream } from "react-kawaii";
+import { useKawaiiTheme } from "@/hooks/useKawaiiTheme";
+import { Step } from "react-joyride";
 
 const pricingSteps: Step[] = [
   {
     target: '[data-tour="pricing-plans"]',
-    content: 'Choose a balloon bundle that fits your needs. More balloons = more AI features!',
+    content:
+      "Choose a balloon bundle that fits your needs. More balloons = more AI features!",
     disableBeacon: true,
   },
   {
     target: '[data-tour="current-balance"]',
-    content: 'Keep track of your balloon balance here.',
+    content: "Keep track of your balloon balance here.",
   },
   {
     target: '[data-tour="earn-balloons"]',
-    content: 'You can also earn free balloons by completing events and tasks!',
+    content: "You can also earn free balloons by completing events and tasks!",
   },
 ];
 
 // Map Stripe price IDs to products
 const STRIPE_PRICE_IDS: { [key: string]: string } = {
-  'Starter Bundle': 'price_1SEIEjE93RkFnvjWk8yE8PN7',
-  'Premium Bundle': 'price_1SEIFsE93RkFnvjWvWy9EWwz',
-  'Ultimate Bundle': 'price_1SEIGgE93RkFnvjW94xFcTlZ',
+  "Starter Bundle": "price_1SEIEjE93RkFnvjWk8yE8PN7",
+  "Premium Bundle": "price_1SEIFsE93RkFnvjWvWy9EWwz",
+  "Ultimate Bundle": "price_1SEIGgE93RkFnvjW94xFcTlZ",
 };
 
 export default function Pricing() {
@@ -47,13 +54,13 @@ export default function Pricing() {
   const { kawaiiColor } = useKawaiiTheme();
 
   const { data: plans, isLoading } = useQuery({
-    queryKey: ['pricing-plans'],
+    queryKey: ["pricing-plans"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('pricing_plans')
-        .select('*')
-        .eq('is_active', true)
-        .order('price', { ascending: true });
+        .from("pricing_plans")
+        .select("*")
+        .eq("is_active", true)
+        .order("price", { ascending: true });
 
       if (error) throw error;
       return data;
@@ -81,19 +88,22 @@ export default function Pricing() {
     }
 
     setPurchasingPlan(planName);
-    
+
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment', {
-        body: { priceId },
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "create-payment",
+        {
+          body: { priceId },
+        }
+      );
 
       if (error) throw error;
 
       if (data?.url) {
-        window.open(data.url, '_blank');
+        window.open(data.url, "_blank");
       }
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error("Payment error:", error);
       toast({
         title: "Error",
         description: "Failed to initiate payment. Please try again.",
@@ -110,13 +120,29 @@ export default function Pricing() {
       <header className="border-b border-border bg-card sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/dashboard")}
+            >
               <FiArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-2xl font-bold text-gradient">Pricing & Plans</h1>
+            <h1 className="text-2xl font-bold text-gradient">
+              Pricing & Plans
+            </h1>
           </div>
           <div className="flex items-center gap-2">
             <ThemeSelector />
+            {isSignedIn && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/profile")}
+                data-tour="profile"
+              >
+                <FiUser className="h-5 w-5" />
+              </Button>
+            )}
             {isSignedIn ? (
               <UserButton afterSignOutUrl="/dashboard" />
             ) : (
@@ -136,7 +162,9 @@ export default function Pricing() {
                 <IceCream size={100} mood="excited" color={kawaiiColor} />
               </div>
               <p className="text-3xl font-bold mb-2">{balloons} 🎈</p>
-              <p className="text-muted-foreground">Your current balloon balance</p>
+              <p className="text-muted-foreground">
+                Your current balloon balance
+              </p>
             </CardContent>
           </Card>
         )}
@@ -168,9 +196,15 @@ export default function Pricing() {
             ))}
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in" data-tour="pricing-plans">
+          <div
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in"
+            data-tour="pricing-plans"
+          >
             {plans?.map((plan) => (
-              <Card key={plan.id} className="relative overflow-hidden hover:shadow-lg transition-shadow">
+              <Card
+                key={plan.id}
+                className="relative overflow-hidden hover:shadow-lg transition-shadow"
+              >
                 {plan.daily_balloons > 0 && (
                   <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-semibold">
                     SUBSCRIPTION
@@ -180,7 +214,9 @@ export default function Pricing() {
                   <CardTitle>{plan.name}</CardTitle>
                   <CardDescription>
                     <span className="text-3xl font-bold">${plan.price}</span>
-                    {plan.daily_balloons > 0 && <span className="text-sm">/month</span>}
+                    {plan.daily_balloons > 0 && (
+                      <span className="text-sm">/month</span>
+                    )}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -207,10 +243,14 @@ export default function Pricing() {
                   <Button
                     onClick={() => handlePurchase(plan.name)}
                     className="w-full"
-                    variant={plan.daily_balloons > 0 ? 'default' : 'outline'}
+                    variant={plan.daily_balloons > 0 ? "default" : "outline"}
                     disabled={purchasingPlan === plan.name}
                   >
-                    {purchasingPlan === plan.name ? 'Processing...' : plan.daily_balloons > 0 ? 'Subscribe' : 'Purchase'}
+                    {purchasingPlan === plan.name
+                      ? "Processing..."
+                      : plan.daily_balloons > 0
+                      ? "Subscribe"
+                      : "Purchase"}
                   </Button>
                 </CardContent>
               </Card>
@@ -246,7 +286,7 @@ export default function Pricing() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button 
+            <Button
               onClick={() => setVipModalOpen(true)}
               className="w-full"
               variant="default"

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FiArrowRight,
   FiLoader,
@@ -659,7 +659,11 @@ export default function CreateEvent() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gradient">eventor.ai</h1>
+          <Link to="/">
+            <h1 className="hover:rotate-[5deg] hover:scale-110 transition-all text-2xl font-bold text-gradient">
+              eventor.ai
+            </h1>
+          </Link>{" "}
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="gap-1">
               <Coins className="h-4 w-4" />

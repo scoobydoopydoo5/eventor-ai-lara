@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import {
   FiPlus,
@@ -158,7 +158,11 @@ export default function Dashboard() {
       <WelcomeTour />
       <header className="border-b border-border bg-card sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gradient">eventor.ai</h1>
+          <Link to="/">
+            <h1 className="hover:rotate-[5deg] hover:scale-110 transition-all text-2xl font-bold text-gradient">
+              eventor.ai
+            </h1>
+          </Link>{" "}
           <div className="flex items-center gap-4">
             <Badge variant="secondary" className="gap-1" data-tour="balloons">
               <Coins className="h-4 w-4" />
@@ -209,6 +213,7 @@ export default function Dashboard() {
               </Button>
             )}
             <ThemeSelector data-tour="theme" />
+
             {isSignedIn ? (
               <UserButton afterSignOutUrl="/dashboard" />
             ) : (

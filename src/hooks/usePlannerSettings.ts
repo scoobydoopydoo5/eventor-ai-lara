@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase-typed';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase-typed";
+import { useToast } from "@/hooks/use-toast";
 
 export interface PlannerSettings {
   id?: string;
@@ -18,12 +18,12 @@ export const usePlannerSettings = (eventId: string) => {
 
   const fetchSettings = async () => {
     if (!eventId) return;
-    
+
     try {
       const { data, error } = await (supabase as any)
-        .from('planner_settings')
-        .select('*')
-        .eq('event_id', eventId)
+        .from("planner_settings")
+        .select("*")
+        .eq("event_id", eventId)
         .maybeSingle();
 
       if (error) throw error;
@@ -36,12 +36,12 @@ export const usePlannerSettings = (eventId: string) => {
           event_id: eventId,
           remove_completed_from_todo: false,
           show_completed_tasks: true,
-          default_view: 'dashboard',
-          play_tictactoe_loading: false,
+          default_view: "dashboard",
+          play_tictactoe_loading: true,
         };
-        
+
         const { data: newData, error: createError } = await (supabase as any)
-          .from('planner_settings')
+          .from("planner_settings")
           .insert([defaultSettings])
           .select()
           .single();
@@ -50,7 +50,7 @@ export const usePlannerSettings = (eventId: string) => {
         setSettings(newData);
       }
     } catch (error) {
-      console.error('Error fetching planner settings:', error);
+      console.error("Error fetching planner settings:", error);
     } finally {
       setLoading(false);
     }
@@ -65,20 +65,20 @@ export const usePlannerSettings = (eventId: string) => {
 
     try {
       const { error } = await (supabase as any)
-        .from('planner_settings')
+        .from("planner_settings")
         .update(updates)
-        .eq('id', settings.id);
+        .eq("id", settings.id);
 
       if (error) throw error;
 
       setSettings({ ...settings, ...updates });
-      
+
       toast({
         title: "Success",
         description: "Settings updated successfully",
       });
     } catch (error) {
-      console.error('Error updating planner settings:', error);
+      console.error("Error updating planner settings:", error);
       toast({
         title: "Error",
         description: "Failed to update settings",

@@ -1,6 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FiArrowLeft, FiUserPlus } from "react-icons/fi";
+import { FiArrowLeft, FiUser, FiUserPlus } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ThemeSelector } from "@/components/ThemeSelector";
@@ -19,6 +19,10 @@ import { Coins } from "lucide-react";
 import { EventoChatCard } from "@/components/event-cards/EventoChatCard";
 import { DetailsCard } from "@/components/event-cards/DetailsCard";
 import { SpeechCard } from "@/components/event-cards/SpeechCard";
+import { MemoriesCard } from "@/components/event-cards/MemoriesCard";
+import { ThemeCard } from "@/components/event-cards/ThemeCard";
+import { FlightsCard } from "@/components/event-cards/FlightsCard";
+import { DecorCard } from "@/components/event-cards/DecorCard";
 import { FAQCard } from "@/components/event-cards/FAQCard";
 import { BlogsCard } from "@/components/event-cards/BlogsCard";
 import { FoodCard } from "@/components/event-cards/FoodCard";
@@ -26,7 +30,6 @@ import { SouvenirsCard } from "@/components/event-cards/SouvenirsCard";
 import { WeatherCard } from "@/components/event-cards/WeatherCard";
 import { SponsorsCard } from "@/components/event-cards/SponsorsCard";
 import { EmergencyCard } from "@/components/event-cards/EmergencyCard";
-import { MemoriesCard } from "@/components/event-cards/MemoriesCard";
 import {
   DndContext,
   closestCenter,
@@ -189,6 +192,41 @@ export default function EventPlan() {
       path: `/event/${eventId}/budget`,
     },
     {
+      id: "faqs",
+      title: "Faqs",
+      icon: "❓",
+      description: "AI FAQ suggestions",
+      path: `/event/${eventId}/faqs`,
+    },
+    {
+      id: "speeches",
+      title: "Speeches",
+      icon: "🎤",
+      description: "Speeches",
+      path: `/event/${eventId}/speeches`,
+    },
+    {
+      id: "memories",
+      title: "Memories",
+      icon: "📸",
+      description: "Memories & highlights",
+      path: `/event/${eventId}/memories`,
+    },
+    {
+      id: "blogs",
+      title: "Blogs",
+      icon: "📰",
+      description: "Event updates & blogs",
+      path: `/event/${eventId}/manage-blogs`,
+    },
+    {
+      id: "invites",
+      title: "Invites",
+      icon: "✉️",
+      description: "Manage invitations",
+      path: `/event/${eventId}/invites`,
+    },
+    {
       id: "invites",
       title: "Invites",
       icon: "✉️",
@@ -250,6 +288,27 @@ export default function EventPlan() {
       icon: "🤝",
       description: "Find event sponsors",
       path: `/event/${eventId}/sponsors`,
+    },
+    {
+      id: "decor",
+      title: "Decor",
+      icon: "🎨",
+      description: "Decoration ideas",
+      path: `/event/${eventId}/decor`,
+    },
+    {
+      id: "themes",
+      title: "Themes",
+      icon: "🪄",
+      description: "Theme ideas",
+      path: `/event/${eventId}/themes`,
+    },
+    {
+      id: "flights",
+      title: "Flights",
+      icon: "✈️",
+      description: "Flight ticket suggestions",
+      path: `/event/${eventId}/flights`,
     },
     {
       id: "memories",
@@ -481,7 +540,11 @@ export default function EventPlan() {
             <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
               <FiArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-2xl font-bold text-gradient">eventor.ai</h1>
+            <Link to="/">
+              <h1 className="hover:rotate-[5deg] hover:scale-110 transition-all text-2xl font-bold text-gradient">
+                eventor.ai
+              </h1>
+            </Link>{" "}
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="gap-1">
@@ -489,6 +552,16 @@ export default function EventPlan() {
               {balloons} Balloons
             </Badge>
             <ThemeSelector />
+            {isSignedIn && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/profile")}
+                data-tour="profile"
+              >
+                <FiUser className="h-5 w-5" />
+              </Button>
+            )}
             {isSignedIn ? (
               <UserButton afterSignOutUrl="/dashboard" />
             ) : (
@@ -573,9 +646,6 @@ export default function EventPlan() {
               {filteredCards.map((card) => (
                 <SortableCard key={card.id} card={card} eventId={eventId!} />
               ))}
-              <SpeechCard />
-              <FAQCard />
-              <BlogsCard />
               <EventoChatCard eventId={eventId!} />
               {event && <EmergencyCard event={event} />}
             </div>

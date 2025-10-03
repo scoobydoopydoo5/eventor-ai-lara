@@ -83,3 +83,8 @@
 html body .crisp-client .cc-1brb6 .cc-1kgzy {
   background-color: hsl(var(--primary)) !important;
 }
+
+.cl-internal-1dauvpw,
+.cl-internal-l2l775 {
+  display: none !important;
+}
