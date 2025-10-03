@@ -1,34 +1,52 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ThemeSelector } from '@/components/ThemeSelector';
-import { AuthButton } from '@/components/AuthButton';
-import { WelcomeTour } from '@/components/WelcomeTour';
-import { FiStar as Sparkles, FiCalendar as Calendar, FiUsers as Users, FiTrendingUp as TrendingUp, FiClock as Clock, FiDollarSign, FiBook, FiMenu, FiX } from 'react-icons/fi';
-import { Planet, IceCream, Cat } from 'react-kawaii';
-import { useKawaiiTheme } from '@/hooks/useKawaiiTheme';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import academyxLogo from '@/assets/academyx-logo.png';
-import { Step } from 'react-joyride';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ThemeSelector } from "@/components/ThemeSelector";
+import { AuthButton } from "@/components/AuthButton";
+import { WelcomeTour } from "@/components/WelcomeTour";
+import {
+  FiStar as Sparkles,
+  FiCalendar as Calendar,
+  FiUsers as Users,
+  FiTrendingUp as TrendingUp,
+  FiClock as Clock,
+  FiDollarSign,
+  FiBook,
+  FiMenu,
+  FiX,
+} from "react-icons/fi";
+import { Planet, IceCream, Cat } from "react-kawaii";
+import { useKawaiiTheme } from "@/hooks/useKawaiiTheme";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import academyxLogo from "@/assets/academyx-logo.png";
+import { Step } from "react-joyride";
 
 const homepageSteps: Step[] = [
   {
     target: '[data-tour="hero"]',
-    content: 'Welcome to eventor.ai! Your AI-powered event planning assistant.',
+    content: "Welcome to eventor.ai! Your AI-powered event planning assistant.",
     disableBeacon: true,
   },
   {
     target: '[data-tour="create-event"]',
-    content: 'Click here to start planning your first event with AI assistance.',
+    content:
+      "Click here to start planning your first event with AI assistance.",
   },
   {
     target: '[data-tour="features"]',
-    content: 'Explore our powerful features including AI planning, scheduling, and budget tracking.',
+    content:
+      "Explore our powerful features including AI planning, scheduling, and budget tracking.",
   },
   {
     target: '[data-tour="how-it-works"]',
-    content: 'Learn how easy it is to plan events in just three simple steps.',
+    content: "Learn how easy it is to plan events in just three simple steps.",
   },
 ];
 
@@ -38,30 +56,36 @@ export default function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigationItems = [
-    { label: 'Docs', icon: FiBook, onClick: () => navigate('/docs') },
-    { label: 'Pricing', icon: FiDollarSign, onClick: () => navigate('/pricing') },
+    { label: "Docs", icon: FiBook, onClick: () => navigate("/docs") },
+    {
+      label: "Pricing",
+      icon: FiDollarSign,
+      onClick: () => navigate("/pricing"),
+    },
   ];
 
   const features = [
     {
       icon: <Sparkles className="h-6 w-6 text-primary" />,
-      title: 'AI-Powered Planning',
-      description: 'Let AI generate personalized event plans based on your preferences',
+      title: "AI-Powered Planning",
+      description:
+        "Let AI generate personalized event plans based on your preferences",
     },
     {
       icon: <Calendar className="h-6 w-6 text-primary" />,
-      title: 'Smart Scheduling',
-      description: 'Automatic timeline generation with weather-aware recommendations',
+      title: "Smart Scheduling",
+      description:
+        "Automatic timeline generation with weather-aware recommendations",
     },
     {
       icon: <Users className="h-6 w-6 text-primary" />,
-      title: 'Guest Management',
-      description: 'Track invitations, RSVPs, and communicate with attendees',
+      title: "Guest Management",
+      description: "Track invitations, RSVPs, and communicate with attendees",
     },
     {
       icon: <TrendingUp className="h-6 w-6 text-primary" />,
-      title: 'Budget Tracking',
-      description: 'Real-time budget monitoring with smart expense insights',
+      title: "Budget Tracking",
+      description: "Real-time budget monitoring with smart expense insights",
     },
   ];
 
@@ -71,14 +95,22 @@ export default function Index() {
       <header className="border-b border-border bg-card sticky top-0 z-50 backdrop-blur-sm bg-card/80">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gradient">eventor.ai</h1>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate('/docs')} className="gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/docs")}
+              className="gap-2"
+            >
               <FiBook className="h-4 w-4" />
               Docs
             </Button>
-            <Button variant="ghost" onClick={() => navigate('/pricing')} className="gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/pricing")}
+              className="gap-2"
+            >
               <FiDollarSign className="h-4 w-4" />
               Pricing
             </Button>
@@ -124,55 +156,71 @@ export default function Index() {
       <main className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto space-y-16">
           {/* Hero Section */}
-          <section className="text-center space-y-6 animate-fade-in" data-tour="hero">
-            <div className="flex justify-center mb-6">
-              <Planet size={120} mood="excited" color={kawaiiColor} />
-            </div>
-            
+          <section
+            className="text-center space-y-6 animate-fade-in"
+            data-tour="hero"
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/10 text-primary text-sm font-medium">
               <Sparkles className="h-4 w-4" />
               AI-Powered Event Planning
             </div>
-            
+
             <h2 className="text-5xl md:text-6xl font-bold leading-tight">
               Plan Your Perfect
               <br />
               <span className="text-gradient">Event with AI</span>
             </h2>
-            
+
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              From birthday parties to corporate events, let AI handle the details while you focus on what matters most.
+              From birthday parties to corporate events, let AI handle the
+              details while you focus on what matters most.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Button
                 size="lg"
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate("/dashboard")}
                 className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 shadow-elegant w-full sm:w-auto"
                 data-tour="create-event"
               >
                 <Sparkles className="h-5 w-5" />
                 Create Event
               </Button>
-              <Button size="lg" variant="outline" onClick={() => navigate('/attendee-create-modes/custom')} className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => navigate("/attendee-create-modes/custom")}
+                className="w-full sm:w-auto"
+              >
                 Plan Attendance
               </Button>
-              <Button size="lg" variant="outline" onClick={() => navigate('/surveys')} className="hidden sm:flex">
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => navigate("/surveys")}
+                className="hidden sm:flex"
+              >
                 Earn Balloons
               </Button>
             </div>
-            
+
             <div className="pt-2">
-              <Button variant="ghost" onClick={() => navigate('/join-by-code')}>
+              <Button variant="ghost" onClick={() => navigate("/join-by-code")}>
                 Join by Code
               </Button>
             </div>
           </section>
 
           {/* Features Grid */}
-          <section className="grid md:grid-cols-2 gap-6 animate-slide-up" data-tour="features">
+          <section
+            className="grid md:grid-cols-2 gap-6 animate-slide-up"
+            data-tour="features"
+          >
             {features.map((feature, idx) => (
-              <Card key={idx} className="shadow-card hover:shadow-elegant transition-smooth">
+              <Card
+                key={idx}
+                className="shadow-card hover:shadow-elegant transition-smooth"
+              >
                 <CardHeader>
                   <div className="mb-2">{feature.icon}</div>
                   <CardTitle>{feature.title}</CardTitle>
@@ -183,20 +231,40 @@ export default function Index() {
           </section>
 
           {/* How It Works */}
-          <section className="space-y-8 animate-fade-in" data-tour="how-it-works">
+          <section
+            className="space-y-8 animate-fade-in"
+            data-tour="how-it-works"
+          >
             <div className="text-center space-y-2">
               <div className="flex justify-center mb-4">
                 <IceCream size={100} mood="blissful" color={kawaiiColor} />
               </div>
               <h3 className="text-3xl font-bold">How It Works</h3>
-              <p className="text-muted-foreground">Get your event planned in three simple steps</p>
+              <p className="text-muted-foreground">
+                Get your event planned in three simple steps
+              </p>
             </div>
-            
+
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { step: '1', title: 'Share Your Vision', description: 'Tell us about your event, preferences, and requirements' },
-                { step: '2', title: 'AI Creates Plan', description: 'Our AI generates a comprehensive event plan tailored to you' },
-                { step: '3', title: 'Manage & Execute', description: 'Track tasks, budget, and guests all in one place' },
+                {
+                  step: "1",
+                  title: "Share Your Vision",
+                  description:
+                    "Tell us about your event, preferences, and requirements",
+                },
+                {
+                  step: "2",
+                  title: "AI Creates Plan",
+                  description:
+                    "Our AI generates a comprehensive event plan tailored to you",
+                },
+                {
+                  step: "3",
+                  title: "Manage & Execute",
+                  description:
+                    "Track tasks, budget, and guests all in one place",
+                },
               ].map((item, idx) => (
                 <Card key={idx} className="text-center shadow-card">
                   <CardContent className="pt-6 space-y-4">
@@ -204,7 +272,9 @@ export default function Index() {
                       {item.step}
                     </div>
                     <h4 className="font-semibold text-lg">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {item.description}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
@@ -218,11 +288,12 @@ export default function Index() {
             </div>
             <h3 className="text-4xl font-bold">Ready to Get Started?</h3>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of event planners who trust eventor.ai to bring their visions to life.
+              Join thousands of event planners who trust eventor.ai to bring
+              their visions to life.
             </p>
             <Button
               size="lg"
-              onClick={() => navigate('/create')}
+              onClick={() => navigate("/create")}
               className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 shadow-elegant"
             >
               <Clock className="h-5 w-5" />
@@ -234,13 +305,23 @@ export default function Index() {
 
       <footer className="border-t border-border bg-card mt-16">
         <div className="container mx-auto px-4 py-8 text-center space-y-4">
-          <p className="text-sm text-muted-foreground">© 2025 eventor.ai. Powered by AI.</p>
+          <p className="text-sm text-muted-foreground">
+            © 2025 eventor.ai. Powered by AI.
+          </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <p className="text-xs text-muted-foreground">Site made by <span className="font-semibold">Lara</span> for</p>
+            <p className="text-xs text-muted-foreground">
+              Site made by <span className="font-semibold">Lara</span> for
+            </p>
             <div className="flex items-center gap-4">
-              <img src={academyxLogo} alt="AcademyX" className="h-8 object-contain" />
+              <img
+                src={academyxLogo}
+                alt="AcademyX"
+                className="h-8 object-contain"
+              />
               <span className="text-xs text-muted-foreground">x</span>
-              <div className="text-sm font-bold" style={{ color: '#E31E24' }}>Agility</div>
+              <div className="text-sm font-bold" style={{ color: "#E31E24" }}>
+                Agility
+              </div>
             </div>
           </div>
         </div>
