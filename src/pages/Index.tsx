@@ -209,32 +209,34 @@ export default function Index() {
               details while you focus on what matters most.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => navigate("/surveys")}
-                className="hidden sm:flex"
-              >
-                Earn Balloons
-              </Button>{" "}
-              <Button
-                size="lg"
-                onClick={() => navigate("/dashboard")}
-                className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 shadow-elegant w-full sm:w-auto"
-                data-tour="create-event"
-              >
-                <Sparkles className="h-5 w-5" />
-                Create Event
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => navigate("/find-events")}
-                className="w-full sm:w-auto"
-              >
-                Find Events
-              </Button>
+            <div className="flex flex-col items-center justify-center gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => navigate("/surveys")}
+                  className="hidden sm:flex"
+                >
+                  Earn Balloons
+                </Button>
+                <Button
+                  size="lg"
+                  onClick={() => navigate("/dashboard")}
+                  className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 shadow-elegant w-full sm:w-auto"
+                  data-tour="create-event"
+                >
+                  <Sparkles className="h-5 w-5" />
+                  Create Event
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => navigate("/find-events")}
+                  className="w-full sm:w-auto"
+                >
+                  Find Events
+                </Button>
+              </div>
             </div>
           </section>
 
@@ -378,6 +380,16 @@ export default function Index() {
               Start Planning Now
             </Button>
           </section>
+          {/* Sticky Lovable Button */}
+          {/* Sticky Lovable Link */}
+          <a
+            href="https://preview--eventor-ai-lara.lovable.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex fixed bottom-4 right-4 gap-2 items-center px-4 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg shadow-lg hover:opacity-90 z-50"
+          >
+            <Heart className="h-5 w-5" />
+          </a>
         </div>
       </main>
 
