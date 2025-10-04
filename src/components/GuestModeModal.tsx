@@ -61,6 +61,9 @@ export function GuestModeModal({
               link can edit your event unless it's password protected.
             </p>
             <div className="flex flex-col gap-2">
+              <Button onClick={handleClose} className="w-full">
+                Continue as Guest
+              </Button>
               <SignInButton mode="modal">
                 <Button className="w-full">Sign In to Save</Button>
               </SignInButton>
@@ -77,9 +80,6 @@ export function GuestModeModal({
                   Download Event Links
                 </Button>
               )}
-              <Button onClick={handleClose} className="w-full">
-                Continue as Guest
-              </Button>
             </div>
           </DialogDescription>
         </DialogHeader>

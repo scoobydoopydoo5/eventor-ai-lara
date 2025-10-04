@@ -30,6 +30,10 @@ export const usePlannerSettings = (eventId: string) => {
 
       if (data) {
         setSettings(data);
+        localStorage.setItem(
+          "play_tictactoe_loading",
+          data.play_tictactoe_loading ? "true" : "false"
+        );
       } else {
         // Create default settings
         const defaultSettings = {

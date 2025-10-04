@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { supabase } from '@/lib/supabase-typed';
-import { useToast } from '@/hooks/use-toast';
-import { Settings } from 'lucide-react';
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { supabase } from "@/lib/supabase-typed";
+import { useToast } from "@/hooks/use-toast";
+import { Settings } from "lucide-react";
 
 interface TaskSettingsDialogProps {
   open: boolean;
@@ -18,7 +18,11 @@ interface TaskSettingsDialogProps {
   eventId: string;
 }
 
-export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettingsDialogProps) {
+export function TaskSettingsDialog({
+  open,
+  onOpenChange,
+  eventId,
+}: TaskSettingsDialogProps) {
   const { toast } = useToast();
   const [settings, setSettings] = useState({
     strike_through_completed: true,
@@ -37,39 +41,39 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
   const loadSettings = async () => {
     try {
       const { data, error } = await (supabase as any)
-        .from('task_settings')
-        .select('*')
-        .eq('event_id', eventId)
+        .from("task_settings")
+        .select("*")
+        .eq("event_id", eventId)
         .single();
 
-      if (error && error.code !== 'PGRST116') throw error;
-      
+      if (error && error.code !== "PGRST116") throw error;
+
       if (data) {
         setSettings(data);
       }
     } catch (error) {
-      console.error('Error loading task settings:', error);
+      console.error("Error loading task settings:", error);
     }
   };
 
   const handleSave = async () => {
     try {
       const { data: existing } = await (supabase as any)
-        .from('task_settings')
-        .select('id')
-        .eq('event_id', eventId)
+        .from("task_settings")
+        .select("id")
+        .eq("event_id", eventId)
         .single();
 
       if (existing) {
         const { error } = await (supabase as any)
-          .from('task_settings')
+          .from("task_settings")
           .update(settings)
-          .eq('event_id', eventId);
+          .eq("event_id", eventId);
 
         if (error) throw error;
       } else {
         const { error } = await (supabase as any)
-          .from('task_settings')
+          .from("task_settings")
           .insert({ ...settings, event_id: eventId });
 
         if (error) throw error;
@@ -81,7 +85,7 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
       });
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving task settings:', error);
+      console.error("Error saving task settings:", error);
       toast({
         title: "Error",
         description: "Failed to save settings",
@@ -110,7 +114,7 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
             </div>
             <Switch
               checked={settings.strike_through_completed}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 setSettings({ ...settings, strike_through_completed: checked })
               }
             />
@@ -125,7 +129,7 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
             </div>
             <Switch
               checked={settings.keep_sections_expanded}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 setSettings({ ...settings, keep_sections_expanded: checked })
               }
             />
@@ -140,7 +144,7 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
             </div>
             <Switch
               checked={settings.divide_tasks_to_sections}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 setSettings({ ...settings, divide_tasks_to_sections: checked })
               }
             />
@@ -155,7 +159,7 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
             </div>
             <Switch
               checked={settings.read_only_mode}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 setSettings({ ...settings, read_only_mode: checked })
               }
             />
@@ -170,7 +174,7 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
             </div>
             <Switch
               checked={settings.move_completed_to_section}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 setSettings({ ...settings, move_completed_to_section: checked })
               }
             />
@@ -181,9 +185,7 @@ export function TaskSettingsDialog({ open, onOpenChange, eventId }: TaskSettings
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSave}>
-            Save Settings
-          </Button>
+          <Button onClick={handleSave}>Save Settings</Button>
         </div>
       </DialogContent>
     </Dialog>

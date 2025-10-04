@@ -295,7 +295,7 @@ export default function EventPlan() {
       title: "Themes",
       icon: "🪄",
       description: "Theme ideas",
-      path: `/event/${eventId}/themes`,
+      path: `/event/${eventId}/theme`,
     },
     {
       id: "flights",

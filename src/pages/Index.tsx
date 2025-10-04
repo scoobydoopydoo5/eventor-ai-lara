@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -62,6 +62,12 @@ export default function Index() {
   const navigate = useNavigate();
   const { kawaiiColor } = useKawaiiTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  useEffect(() => {
+    const existing = localStorage.getItem("play_tictactoe_loading");
+    if (existing === null) {
+      localStorage.setItem("play_tictactoe_loading", "true");
+    }
+  }, []);
 
   const navigationItems = [
     { label: "Docs", icon: FiBook, onClick: () => navigate("/docs") },
@@ -392,7 +398,7 @@ export default function Index() {
           <section className="py-16 overflow-hidden">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-muted-foreground/60">
-                Trusted By
+                Made by <span className="text-primary">Lara</span> for:
               </h3>
             </div>
             <div className="relative">

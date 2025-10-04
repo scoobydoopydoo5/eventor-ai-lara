@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase-typed';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase-typed";
+import { useToast } from "@/hooks/use-toast";
 
 export interface Event {
   id: string;
@@ -41,14 +41,14 @@ export const useEvents = () => {
   const fetchEvents = async () => {
     try {
       const { data, error } = await (supabase as any)
-        .from('events')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("events")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       setEvents(data || []);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error("Error fetching events:", error);
       toast({
         title: "Error",
         description: "Failed to load events",
@@ -63,49 +63,92 @@ export const useEvents = () => {
     fetchEvents();
   }, []);
 
-  const createEvent = async (eventData: Omit<Event, 'id' | 'user_id' | 'created_at' | 'updated_at'>, clerkUserId?: string | null) => {
+  const createEvent = async (
+    eventData: Omit<Event, "id" | "user_id" | "created_at" | "updated_at">,
+    clerkUserId?: string | null
+  ) => {
     try {
       // Filter out fields that don't exist in the database schema
-      const {
-        countryCode,
-        stateCode,
-        ...validEventData
-      } = eventData as any;
+      const { countryCode, stateCode, ...validEventData } = eventData as any;
 
-      console.log('Creating event with data:', { ...validEventData, clerk_user_id: clerkUserId });
+      console.log("Creating event with data:", {
+        ...validEventData,
+        clerk_user_id: clerkUserId,
+      });
 
       const { data, error } = await (supabase as any)
-        .from('events')
-        .insert([{ 
-          ...validEventData, 
-          user_id: null, // Always null - using clerk_user_id for authenticated users
-          clerk_user_id: clerkUserId || null // Null for guests, set for authenticated users
-        }])
+        .from("events")
+        .insert([
+          {
+            ...validEventData,
+            user_id: null, // Always null - using clerk_user_id for authenticated users
+            clerk_user_id: clerkUserId || null, // Null for guests, set for authenticated users
+          },
+        ])
         .select()
         .single();
 
       if (error) {
-        console.error('Database error creating event:', error);
+        console.error("Database error creating event:", error);
         throw error;
       }
-      
+      // Create default event settings with all visible cards
+      const defaultVisibleCards = [
+        "details",
+        "planner",
+        "full-plan",
+        "budget",
+        "invites",
+        "timeline",
+        "vendors",
+        "guests",
+        "tickets",
+        "food",
+        "souvenirs",
+        "weather",
+        "sponsors",
+        "flights",
+        "decor",
+        "themes",
+        "memories",
+        "faqs",
+        "blogs",
+        "chat",
+      ];
+
+      const { error: settingsError } = await (supabase as any)
+        .from("event_settings")
+        .insert([
+          {
+            event_id: data.id,
+            visible_cards: defaultVisibleCards,
+            external_invites_enabled: true,
+            ice_breakers_enabled: true,
+          },
+        ]);
+
+      if (settingsError) {
+        console.error("Error creating event settings:", settingsError);
+      }
       // Store in localStorage for guest users
       if (!clerkUserId) {
-        const guestEvents = JSON.parse(localStorage.getItem('guestEvents') || '[]');
+        const guestEvents = JSON.parse(
+          localStorage.getItem("guestEvents") || "[]"
+        );
         guestEvents.push(data.id);
-        localStorage.setItem('guestEvents', JSON.stringify(guestEvents));
+        localStorage.setItem("guestEvents", JSON.stringify(guestEvents));
       }
-      
+
       await fetchEvents();
-      console.log('Event created successfully:', data);
+      console.log("Event created successfully:", data);
       return data;
     } catch (error: any) {
-      console.error('Error creating event:', error);
-      console.error('Error details:', {
+      console.error("Error creating event:", error);
+      console.error("Error details:", {
         message: error.message,
         code: error.code,
         details: error.details,
-        hint: error.hint
+        hint: error.hint,
       });
       toast({
         title: "Error",
@@ -119,15 +162,15 @@ export const useEvents = () => {
   const updateEvent = async (id: string, eventData: Partial<Event>) => {
     try {
       const { error } = await (supabase as any)
-        .from('events')
+        .from("events")
         .update(eventData)
-        .eq('id', id);
+        .eq("id", id);
 
       if (error) throw error;
-      
+
       await fetchEvents();
     } catch (error) {
-      console.error('Error updating event:', error);
+      console.error("Error updating event:", error);
       toast({
         title: "Error",
         description: "Failed to update event",
@@ -140,15 +183,15 @@ export const useEvents = () => {
   const deleteEvent = async (id: string) => {
     try {
       const { error } = await (supabase as any)
-        .from('events')
+        .from("events")
         .delete()
-        .eq('id', id);
+        .eq("id", id);
 
       if (error) throw error;
-      
+
       await fetchEvents();
     } catch (error) {
-      console.error('Error deleting event:', error);
+      console.error("Error deleting event:", error);
       toast({
         title: "Error",
         description: "Failed to delete event",
