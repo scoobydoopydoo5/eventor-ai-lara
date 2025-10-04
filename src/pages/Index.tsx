@@ -32,6 +32,7 @@ import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { Heart } from "lucide-react";
 import { useUser } from "@clerk/clerk-react";
+import { MaskContainer } from "@/components/ui/svg-mask-effect";
 
 const homepageSteps: Step[] = [
   {
@@ -239,7 +240,6 @@ export default function Index() {
               </div>
             </div>
           </section>
-
           {/* Features Grid */}
           <section
             className="grid md:grid-cols-2 gap-6 animate-slide-up"
@@ -315,52 +315,61 @@ export default function Index() {
             className="space-y-8 animate-fade-in"
             data-tour="how-it-works"
           >
-            <div className="text-center space-y-2">
-              <div className="flex justify-center mb-4">
-                <IceCream size={100} mood="blissful" color={kawaiiColor} />
+            {" "}
+            <MaskContainer
+              revealText={
+                <p className="mx-auto max-w-4xl text-center text-4xl font-bold text-slate-800 dark:text-white">
+                  HOVER to see how it works!{" "}
+                </p>
+              }
+              className="h-[40rem] rounded-md border text-white dark:text-black"
+            >
+              <div className="text-center space-y-2">
+                <div className="flex justify-center mb-4">
+                  <IceCream size={100} mood="blissful" color={kawaiiColor} />
+                </div>
+                <h3 className="text-3xl font-bold">How It Works</h3>
+                <p className="text-muted-foreground">
+                  Get your event planned in three simple steps
+                </p>
               </div>
-              <h3 className="text-3xl font-bold">How It Works</h3>
-              <p className="text-muted-foreground">
-                Get your event planned in three simple steps
-              </p>
-            </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  step: "1",
-                  title: "Share Your Vision",
-                  description:
-                    "Tell us about your event, preferences, and requirements",
-                },
-                {
-                  step: "2",
-                  title: "AI Creates Plan",
-                  description:
-                    "Our AI generates a comprehensive event plan tailored to you",
-                },
-                {
-                  step: "3",
-                  title: "Manage & Execute",
-                  description:
-                    "Track tasks, budget, and guests all in one place",
-                },
-              ].map((item, idx) => (
-                <Card key={idx} className="text-center shadow-card">
-                  <CardContent className="pt-6 space-y-4">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary text-xl font-bold">
-                      {item.step}
-                    </div>
-                    <h4 className="font-semibold text-lg">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {item.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  {
+                    step: "1",
+                    title: "Share Your Vision",
+                    description:
+                      "Tell us about your event, preferences, and requirements",
+                  },
+                  {
+                    step: "2",
+                    title: "AI Creates Plan",
+                    description:
+                      "Our AI generates a comprehensive event plan tailored to you",
+                  },
+                  {
+                    step: "3",
+                    title: "Manage & Execute",
+                    description:
+                      "Track tasks, budget, and guests all in one place",
+                  },
+                ].map((item, idx) => (
+                  <Card key={idx} className="text-center shadow-card">
+                    <CardContent className="pt-6 space-y-4">
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary text-xl font-bold">
+                        {item.step}
+                      </div>
+                      <h4 className="font-semibold text-lg">{item.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </MaskContainer>
           </section>
-
           {/* CTA Section */}
           <section className="text-center space-y-6 py-16 animate-fade-in">
             <div className="flex justify-center mb-4">
@@ -379,6 +388,42 @@ export default function Index() {
               <Clock className="h-5 w-5" />
               Start Planning Now
             </Button>
+          </section>{" "}
+          <section className="py-16 overflow-hidden">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-muted-foreground/60">
+                Trusted By
+              </h3>
+            </div>
+            <div className="relative">
+              <div className="flex animate-[scroll_20s_linear_infinite] hover:[animation-play-state:paused]">
+                {[...Array(8)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-12 px-12 shrink-0"
+                  >
+                    <img
+                      src={
+                        "https://www.supplychain247.com/images/logos/agility_logo_600.png"
+                      }
+                      alt="Agility"
+                      className="h-12 object-contain opacity-60 hover:opacity-100 transition-opacity"
+                    />
+                    <span className="text-3xl font-bold text-muted-foreground/40">
+                      ×
+                    </span>
+                    <img
+                      src={academyxLogo}
+                      alt="AcademyX"
+                      className="h-12 object-contain opacity-60 hover:opacity-100 transition-opacity"
+                    />
+                    <span className="text-3xl font-bold text-muted-foreground/40">
+                      ×
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
           {/* Sticky Lovable Button */}
           {/* Sticky Lovable Link */}

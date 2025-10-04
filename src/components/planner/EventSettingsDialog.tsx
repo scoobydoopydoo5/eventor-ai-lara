@@ -22,7 +22,6 @@ const defaultCards = [
   { id: "details", label: "Details" },
   { id: "planner", label: "Planner" },
   { id: "full-plan", label: "Full Plan" },
-  { id: "tasks", label: "Tasks" },
   { id: "budget", label: "Budget" },
   { id: "invites", label: "Invites" },
   { id: "timeline", label: "Timeline" },

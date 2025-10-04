@@ -1,18 +1,27 @@
-import { useState, useEffect } from 'react';
-import { SignInButton } from '@clerk/clerk-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { FiAlertCircle, FiDownload } from 'react-icons/fi';
-import { supabase } from '@/lib/supabase-typed';
-import { useClerkAuth } from '@/contexts/ClerkAuthContext';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from "react";
+import { SignInButton } from "@clerk/clerk-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { FiAlertCircle, FiDownload } from "react-icons/fi";
+import { supabase } from "@/lib/supabase-typed";
+import { useClerkAuth } from "@/contexts/ClerkAuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface GuestModeModalProps {
   guestEvents: any[];
   onDownloadLinks: () => void;
 }
 
-export function GuestModeModal({ guestEvents, onDownloadLinks }: GuestModeModalProps) {
+export function GuestModeModal({
+  guestEvents,
+  onDownloadLinks,
+}: GuestModeModalProps) {
   const [open, setOpen] = useState(false);
   const { userId } = useClerkAuth();
   const { toast } = useToast();
@@ -26,14 +35,14 @@ export function GuestModeModal({ guestEvents, onDownloadLinks }: GuestModeModalP
     if (userId) return;
 
     // Check localStorage for first-time visitors
-    const hasSeenWarning = localStorage.getItem('hasSeenGuestWarning');
+    const hasSeenWarning = localStorage.getItem("hasSeenGuestWarning");
     if (!hasSeenWarning) {
       setOpen(true);
     }
   };
 
   const handleClose = async () => {
-    localStorage.setItem('hasSeenGuestWarning', 'true');
+    localStorage.setItem("hasSeenGuestWarning", "true");
     setOpen(false);
   };
 
@@ -47,18 +56,17 @@ export function GuestModeModal({ guestEvents, onDownloadLinks }: GuestModeModalP
           </DialogTitle>
           <DialogDescription className="space-y-4 pt-4">
             <p className="text-sm">
-              Your events are stored locally on this device only. Sign in to sync across devices and prevent data loss.
-              Anyone with the event link can edit your event unless it's password protected.
+              Your events are stored locally on this device only. Sign in to
+              sync across devices and prevent data loss. Anyone with the event
+              link can edit your event unless it's password protected.
             </p>
             <div className="flex flex-col gap-2">
               <SignInButton mode="modal">
-                <Button className="w-full">
-                  Sign In to Save
-                </Button>
+                <Button className="w-full">Sign In to Save</Button>
               </SignInButton>
               {guestEvents.length > 0 && (
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => {
                     onDownloadLinks();
                     handleClose();
@@ -69,11 +77,7 @@ export function GuestModeModal({ guestEvents, onDownloadLinks }: GuestModeModalP
                   Download Event Links
                 </Button>
               )}
-              <Button 
-                variant="ghost" 
-                onClick={handleClose}
-                className="w-full"
-              >
+              <Button onClick={handleClose} className="w-full">
                 Continue as Guest
               </Button>
             </div>

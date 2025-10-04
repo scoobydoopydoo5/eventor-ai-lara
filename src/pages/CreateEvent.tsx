@@ -28,6 +28,8 @@ import { Badge } from "@/components/ui/badge";
 import { Coins } from "lucide-react";
 import { ConfettiButton } from "@/components/ConfettiButton";
 import { LoadingWithTicTacToe } from "@/components/LoadingWithTicTacToe";
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
 const steps = ["Basic Info", "Details", "Location", "Preferences"];
 

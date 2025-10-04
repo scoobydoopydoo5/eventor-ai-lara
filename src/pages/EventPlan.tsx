@@ -172,18 +172,12 @@ export default function EventPlan() {
     },
     {
       id: "full-plan",
-      title: "Full Plan",
+      title: "Full Overview",
       icon: "📋",
       description: "View complete event overview",
       path: `/event/${eventId}/full-plan`,
     },
-    {
-      id: "tasks",
-      title: "Tasks",
-      icon: "✅",
-      description: "Manage event tasks",
-      path: `/event/${eventId}/tasks`,
-    },
+
     {
       id: "budget",
       title: "Budget",
