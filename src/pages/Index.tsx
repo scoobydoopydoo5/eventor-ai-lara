@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { TypeAnimation } from "react-type-animation";
+
 import {
   Card,
   CardContent,
@@ -208,7 +210,57 @@ export default function Index() {
             <h2 className="text-5xl md:text-6xl font-bold leading-tight">
               Plan Your Perfect
               <br />
-              <span className="text-gradient">Event with AI</span>
+              <TypeAnimation
+                sequence={[
+                  "Event 🎉",
+                  2000,
+                  "Birthday 🎂",
+                  2000,
+                  "Wedding 💍",
+                  2000,
+                  "Conference 💼",
+                  2000,
+                  "Workshop 🧠",
+                  2000,
+                  "Festival 🎊",
+                  2000,
+                  "Graduation 🎓",
+                  2000,
+                  "Baby Shower 🍼",
+                  2000,
+                  "Corporate Gala 🕴️",
+                  2000,
+                  "Charity Fundraiser ❤️",
+                  2000,
+                  "Quran Reading 📖",
+                  2000,
+                  "Lecture 🎤",
+                  2000,
+                  "Team Retreat 🏞️",
+                  2000,
+                  "Exhibition 🖼️",
+                  2000,
+                  "Sports Day ⚽",
+                  2000,
+                  "Cultural Night 🌍",
+                  2000,
+                  "Farewell Party 👋",
+                  2000,
+                  "Hackathon 💻",
+                  2000,
+                  "Award Ceremony 🏆",
+                  2000,
+                  "Engagement 💖",
+                  2000,
+                  "New Year Bash 🎆",
+                  2000,
+                ]}
+                wrapper="span"
+                cursor={true}
+                repeat={Infinity}
+                className="text-gradient inline-block"
+              />
+              <span className="text-gradient"> with AI</span>
             </h2>
 
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

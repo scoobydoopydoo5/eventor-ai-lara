@@ -255,3 +255,6 @@ All colors MUST be HSL.
 .cl-internal-l2l775 {
   display: none !important;
 }
+.text-gradient::after {
+  display: none !important;
+}
