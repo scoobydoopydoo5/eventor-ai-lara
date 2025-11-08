@@ -773,7 +773,7 @@ export default function Docs() {
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
                 Site made by{" "}
-                <span className="font-semibold text-primary">Lara</span> for{" "}
+                <span className="font-semibold text-primary">Salah</span> for{" "}
                 <span className="font-semibold text-primary">
                   AcademyX x Agility
                 </span>
@@ -816,7 +816,7 @@ export default function Docs() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <p className="text-xs text-muted-foreground">
-              Site made by <span className="font-semibold">Lara</span> for
+              Site made by <span className="font-semibold">Salah</span> for
             </p>
             <div className="flex items-center gap-4">
               <img

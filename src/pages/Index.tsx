@@ -450,7 +450,7 @@ export default function Index() {
           <section className="py-16 overflow-hidden">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-muted-foreground/60">
-                Made by <span className="text-primary">Lara</span> for:
+                Made by <span className="text-primary">Salah</span> for:
               </h3>
             </div>
             <div className="relative">
@@ -486,7 +486,7 @@ export default function Index() {
           {/* Sticky Lovable Button */}
           {/* Sticky Lovable Link */}
           <a
-            href="https://preview--eventor-ai-lara.lovable.app/"
+            href="github.com"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden md:flex fixed bottom-4 right-4 gap-2 items-center px-4 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg shadow-lg hover:opacity-90 z-50"
@@ -503,7 +503,7 @@ export default function Index() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <p className="text-xs text-muted-foreground">
-              Site made by <span className="font-semibold">Lara</span> for
+              Site made by <span className="font-semibold">Salah</span> for
             </p>
             <div className="flex items-center gap-4">
               <img
